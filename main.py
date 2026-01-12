@@ -2,7 +2,7 @@ from classes.champion import Champion
 from utils.stats import Stats
 
 def printChamp(champ: Champion):
-    print(f"\nWe have chapion \"{champ.getName()}\":")
+    print(f"\nWe have champion \"{champ.getName()}\":")
     print(f"\tATK:{champ.getStat('ATK')}, DEF:{champ.getStat('DEF')},")
     print(f"\tSPATK:{champ.getStat('SPATK')}, SPDEF:{champ.getStat('SPDEF')}, SPD:{champ.getStat('SPD')}")
     mtype,mcount = champ.getMinion()
