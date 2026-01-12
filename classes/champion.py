@@ -8,6 +8,10 @@ class Champion:
         self.stat: List[int] = stat
         self.minionType, self.minionCount = minions
 
+    # returns the name of champion
+    def getName(self) -> str:
+        return self.name
+        
     # returns the tuple of minion type(str) and minion count(int) of current champinon
     def getMinion(self) -> tuple:
         return (self.minionType, self.minionCount) 
