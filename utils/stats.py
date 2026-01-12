@@ -1,0 +1,1 @@
+stats = ['atk', 'def', 'spatk', 'spdef', 'spd']
