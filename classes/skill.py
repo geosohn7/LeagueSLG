@@ -11,7 +11,7 @@ class Skill(ABC):
         return True
 
     def roll(self) -> bool:
-        return random.random() < self.prob
+        return random.random(0, 1) < self.prob
 
     @abstractmethod
     def cast(self, caster, target=None):
