@@ -12,7 +12,7 @@ class Champion:
     # None = None 뭘 하려는지는 알겠는데, 그게 에러를 내고 있음
     def __init__(
             self, 
-            name:str='', 
+            name:str='',
             base_stat:List[int]=[],
             stat_growth:List[float]=[],
             level:int=1,
@@ -20,14 +20,16 @@ class Champion:
             skills:List[Skill]=[] 
     ):
         self.name: str = name
-        self.base_stat = base_stat or [0,0,0,0,0]
-        self.stat_growth = stat_growth or [0,0,0,0,0]
+        self.base_stat = base_stat or [0,0,0,0,0,0]
+        self.stat_growth = stat_growth or [0,0,0,0,0,0]
         self.level = level
         self.minion_type, self.minion_count = minions
         self.skill = skills or []
         self.buffs: list[Buff] = []
+        
 
         self.recalculate_stats()
+        self.hp: float = self.getStat('HP') or 0.0
         
 
     # I would rather add here if it keep gets the error
@@ -54,11 +56,12 @@ class Champion:
         final = self.apply_buffs(before_buff, self.buffs)
 
         self.stat = {
-            "ATK": final[0],
-            "DEF": final[1],
-            "SPATK": final[2],
-            "SPDEF": final[3],
-            "SPD": final[4],
+            "HP": final[0],
+            "ATK": final[1],
+            "DEF": final[2],
+            "SPATK": final[3],
+            "SPDEF": final[4],
+            "SPD": final[5],
         }
 
     # 스킬의 발동확률
@@ -83,6 +86,9 @@ class Champion:
     # returns the stat value based on string input of which stat is needed
     def getStat(self, name: str) -> float:
         return self.stat[name.upper()]
+    
+    def getCurrHealth(self) -> float:
+        return self.hp
 
     # in-game logic methods (CC is part of Buff -- subset)
     def addBuff(self, buff_type:str, duration:float):
@@ -111,6 +117,10 @@ class Champion:
             buff.buff_type == BuffType.SLOW
             for buff in self.buffs
         )
+    
+    def is_alive(self) -> bool:
+        return self.hp > 0
+
 
     # anything (for merge conflict)
 

@@ -3,7 +3,7 @@ from utils.stats import Stats
 
 def printChamp(champ: Champion):
     print(f"\nWe have champion \"{champ.getName()}\":")
-    print(f"\tATK:{champ.getStat('ATK')}, DEF:{champ.getStat('DEF')},")
+    print(f"\tHP:{champ.getCurrHealth()}, ATK:{champ.getStat('ATK')}, DEF:{champ.getStat('DEF')},")
     print(f"\tSPATK:{champ.getStat('SPATK')}, SPDEF:{champ.getStat('SPDEF')}, SPD:{champ.getStat('SPD')}")
     mtype,mcount = champ.getMinion()
     print(f"\n\tMinion-Type: {mtype}, \n\tMinion-Count:{mcount}\n")
@@ -11,8 +11,8 @@ def printChamp(champ: Champion):
 if __name__ == "__main__":
     Garen = Champion(
         'Garen', 
-        [69, 38, 0, 32, 340], 
-        [0, 0, 0, 0, 0], 
+        [690, 69, 38, 0, 32, 340], 
+        [0, 0, 0, 0, 0, 0], 
         1, 
         ('Meele', 10)
     )
