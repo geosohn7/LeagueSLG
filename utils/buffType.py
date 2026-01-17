@@ -5,3 +5,5 @@ class BuffType(Enum):
     SILENCE = "silence"
     STUN = "stun"
     SLOW = "slow"
+
+    #looks good to me!
