@@ -12,6 +12,7 @@ class Skill(ABC):
 
     def roll(self) -> bool:
         return random.random(0, 1) < self.prob
+    
 
     @abstractmethod
     def cast(self, caster, target=None):
