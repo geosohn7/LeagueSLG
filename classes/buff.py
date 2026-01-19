@@ -14,3 +14,7 @@ class Buff:
 
     def is_expired(self) -> bool:
         return time.time() >= self.expire_time
+
+#스탯변화함수
+    def apply_stats(self, stats):
+        return stats

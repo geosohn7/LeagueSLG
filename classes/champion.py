@@ -44,6 +44,13 @@ class Champion:
     def apply_buffs(self, stats, buffs):
         result = stats.copy()
 
+        #버프로 인한 스탯변화 순서대로 적용
+
+        for buff in buffs:
+                if buff.is_expired():
+                    continue
+            result = buff.apply_stats(result)
+
         return result
     
     def recalculate_stats(self):
