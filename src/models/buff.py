@@ -1,4 +1,4 @@
-from instance.buff_effects import apply_buff_to_stats
+from src.logic.effects.buff_effects import apply_buff_to_stats
 
 class Buff:
     """

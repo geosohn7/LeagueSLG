@@ -1,5 +1,5 @@
 import json
-from classes.buff import Buff
+from src.models.buff import Buff
 
 # 버프 데이터 캐싱용 변수
 _BUFF_DATA = None
@@ -11,7 +11,7 @@ def _load_buff_data():
     global _BUFF_DATA
     if _BUFF_DATA is None:
         try:
-            with open("instance/buffs.json", "r", encoding="utf-8") as f:
+            with open("data/buffs.json", "r", encoding="utf-8") as f:
                 _BUFF_DATA = json.load(f)
         except FileNotFoundError:
             _BUFF_DATA = {}

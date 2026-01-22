@@ -55,7 +55,7 @@ class Skill:
 
         # 3. JSON에 정의된 버프 목록을 자동 적용
         buff_list = self.data.get("buffs", [])
-        from instance.buff_factory import create_buff
+        from src.factories.buff_factory import create_buff
         
         for b_data in buff_list:
             b_id = b_data.get("type")

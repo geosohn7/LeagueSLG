@@ -1,0 +1,32 @@
+{
+    "LongSword": {
+        "name": "Long Sword",
+        "stat_bonuses": [
+            { "stat": "ATK", "value": 10, "is_percent": false }
+        ],
+        "description": "Increases Attack by 10."
+    },
+    "ChainVest": {
+        "name": "Chain Vest",
+        "stat_bonuses": [
+            { "stat": "DEF", "value": 15, "is_percent": false }
+        ],
+        "description": "Increases Defense by 15."
+    },
+    "SwiftBoots": {
+        "name": "Swift Boots",
+        "stat_bonuses": [
+            { "stat": "SPD", "value": 10, "is_percent": true }
+        ],
+        "description": "Increases Speed by 10%."
+    },
+    "LifeOrb": {
+        "name": "Life Orb",
+        "on_hit": {
+            "type": "extra_damage",
+            "value": 0.1
+        },
+        "description": "Grants +10% extra damage on attacks at the cost of some self-damage (not enforced by data)."
+    }
+}
+

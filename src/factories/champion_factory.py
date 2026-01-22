@@ -1,7 +1,7 @@
 import json
 import importlib
-from classes.champion import Champion
-from instance.skill_factory import create_skill
+from src.models.champion import Champion
+from src.factories.skill_factory import create_skill
 
 _CHAMPION_DATA = None
 
@@ -9,7 +9,7 @@ _CHAMPION_DATA = None
 def _load_champion_data():
     global _CHAMPION_DATA
     if _CHAMPION_DATA is None:
-        with open("instance/champions.json", "r", encoding="utf-8") as f:
+        with open("data/champions.json", "r", encoding="utf-8") as f:
             _CHAMPION_DATA = json.load(f)
     return _CHAMPION_DATA
 

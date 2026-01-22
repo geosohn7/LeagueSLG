@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전투 리포트 - LeagueSLG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+        
+        :root {
+            --bg-color: #010a13;
+            --card-bg: #091428;
+            --border-color: #785a28;
+            --gold: #c8aa6e;
+            --health: #1e6432;
+            --damage: #c83232;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #f0e6d2;
+            font-family: 'Noto+Sans+KR', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .battle-arena {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            max-width: 1000px;
+            margin-top: 50px;
+            gap: 20px;
+        }
+
+        .champion-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            width: 40%;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .champion-card.active {
+            border-color: #f0e6d2;
+            box-shadow: 0 0 20px rgba(240, 230, 210, 0.3);
+            transform: scale(1.05);
+        }
+
+        .hp-bar-container {
+            background: #222;
+            height: 25px;
+            width: 100%;
+            margin-top: 15px;
+            border: 1px solid #444;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .hp-bar {
+            height: 100%;
+            background: linear-gradient(to right, #28a745, #1e6432);
+            width: 100%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hp-text {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .log-container {
+            margin-top: 50px;
+            width: 90%;
+            max-width: 800px;
+            background: rgba(9, 20, 40, 0.8);
+            border: 1px solid var(--border-color);
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .log-entry {
+            padding: 8px;
+            border-bottom: 1px solid rgba(120, 90, 40, 0.2);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background: var(--gold);
+            border: none;
+            padding: 10px 25px;
+            color: #010a13;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #e1c382;
+        }
+
+        .damage-pop {
+            position: absolute;
+            color: var(--damage);
+            font-weight: bold;
+            font-size: 24px;
+            animation: fadeUp 0.8s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(0); }
+            20% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>전투 연대기</h1>
+        <p id="battle-title"></p>
+    </header>
+
+    <div class="battle-arena">
+        <div id="left-card" class="champion-card">
+            <h2 id="left-name"></h2>
+            <div class="hp-bar-container">
+                <div id="left-hp-bar" class="hp-bar"></div>
+            </div>
+            <div id="left-hp-text" class="hp-text"></div>
+        </div>
+
+        <div id="right-card" class="champion-card">
+            <h2 id="right-name"></h2>
+            <div class="hp-bar-container">
+                <div id="right-hp-bar" class="hp-bar"></div>
+            </div>
+            <div id="right-hp-text" class="hp-text"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="playNext()">다음 턴</button>
+        <button onclick="autoPlay()">자동 재생</button>
+    </div>
+
+    <div id="logs" class="log-container"></div>
+
+    <script>
+        const history = [{"turn": 1, "actor": "Darius", "target": "Garen", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 89.8, "left_hp": 600.2, "right_hp": 652}, {"turn": 1, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 600.2, "right_hp": 487.8}, {"turn": 2, "actor": "Darius", "target": "Garen", "action": "Decimation", "damage": 161.7, "left_hp": 438.5, "right_hp": 487.8}, {"turn": 2, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 438.5, "right_hp": 323.5}, {"turn": 3, "actor": "Darius", "target": "Garen", "action": "Decimation", "damage": 161.7, "left_hp": 276.8, "right_hp": 323.5}, {"turn": 3, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 276.8, "right_hp": 159.3}, {"turn": 4, "actor": "Darius", "target": "Garen", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 89.8, "left_hp": 187.0, "right_hp": 159.3}, {"turn": 4, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 187.0, "right_hp": 0}];
+        const leftMaxHp = 690;
+        const rightMaxHp = 652;
+        const leftName = "Garen";
+        const rightName = "Darius";
+
+        document.getElementById('left-name').innerText = leftName;
+        document.getElementById('right-name').innerText = rightName;
+        document.getElementById('battle-title').innerText = `${leftName} VS ${rightName}`;
+        
+        let currentIndex = 0;
+        let isAutoPlaying = false;
+
+        function updateUI(step) {
+            document.querySelectorAll('.champion-card').forEach(c => c.classList.remove('active'));
+            
+            const card = step.actor === leftName ? 'left-card' : 'right-card';
+            const targetCard = step.target === leftName ? 'left-card' : 'right-card';
+            
+            document.getElementById(card).classList.add('active');
+
+            // HP Bar Update
+            const leftPercent = (step.left_hp / leftMaxHp) * 100;
+            const rightPercent = (step.right_hp / rightMaxHp) * 100;
+
+            document.getElementById('left-hp-bar').style.width = Math.max(0, leftPercent) + '%';
+            document.getElementById('right-hp-bar').style.width = Math.max(0, rightPercent) + '%';
+            
+            document.getElementById('left-hp-text').innerText = `${step.left_hp} / ${leftMaxHp}`;
+            document.getElementById('right-hp-text').innerText = `${step.right_hp} / ${rightMaxHp}`;
+
+            // Damage Pop
+            if (step.damage > 0) {
+                showDamage(targetCard, step.damage);
+            }
+
+            // Log Add
+            const logBox = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<strong>[Turn ${step.turn}]</strong> ${step.actor}: ${step.action}! (${step.damage} 데미지)`;
+            logBox.prepend(entry);
+        }
+
+        function showDamage(cardId, amount) {
+            const card = document.getElementById(cardId);
+            const pop = document.createElement('div');
+            pop.className = 'damage-pop';
+            pop.innerText = `-${amount}`;
+            pop.style.left = '50%';
+            pop.style.top = '20%';
+            card.appendChild(pop);
+            setTimeout(() => pop.remove(), 800);
+        }
+
+        function playNext() {
+            if (currentIndex < history.length) {
+                updateUI(history[currentIndex]);
+                currentIndex++;
+            } else {
+                alert("전투가 종료되었습니다.");
+                isAutoPlaying = false;
+            }
+        }
+
+        function autoPlay() {
+            if (isAutoPlaying) return;
+            isAutoPlaying = true;
+            const interval = setInterval(() => {
+                if (currentIndex >= history.length || !isAutoPlaying) {
+                    clearInterval(interval);
+                    isAutoPlaying = false;
+                    return;
+                }
+                playNext();
+            }, 1200);
+        }
+    </script>
+</body>
+</html>

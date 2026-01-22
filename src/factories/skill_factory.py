@@ -1,6 +1,6 @@
 import json
 import importlib
-from classes.skill import Skill
+from src.models.skill import Skill
 
 _SKILL_DATA = None
 
@@ -8,7 +8,7 @@ def _load_skill_data():
     global _SKILL_DATA
     if _SKILL_DATA is None:
         try:
-            with open("instance/skills.json", "r", encoding="utf-8") as f:
+            with open("data/skills.json", "r", encoding="utf-8") as f:
                 _SKILL_DATA = json.load(f)
         except FileNotFoundError:
             _SKILL_DATA = {}

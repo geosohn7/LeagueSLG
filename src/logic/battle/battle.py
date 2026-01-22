@@ -1,6 +1,6 @@
 from typing import List
-from classes.champion import Champion
-from classes.skill import Skill
+from src.models.champion import Champion
+from src.models.skill import Skill
 
 
 class Battle:
@@ -11,6 +11,7 @@ class Battle:
         self.left = left
         self.right = right
         self.turn = 1
+        self.history = [] # 전투 기록 저장
 
     def start(self):
         """전투를 시작하고 승자가 결정될 때까지 루프를 실행"""
@@ -77,14 +78,25 @@ class Battle:
     def _use_skill(self, attacker: Champion, defender: Champion, skill: Skill):
         """스킬을 사용하고 결과를 로그에 남김"""
         self._log(f"[{attacker.name}] {skill.name} 시전!")
+        old_hp = defender.current_hp
         skill.cast(self, attacker, defender)
+        damage = old_hp - defender.current_hp
         self._log(f"   (HP: {defender.current_hp:.1f})")
+        
+        self.history.append({
+            "turn": self.turn,
+            "actor": attacker.name,
+            "target": defender.name,
+            "action": skill.name,
+            "damage": round(damage, 1),
+            "left_hp": round(self.left.current_hp, 1),
+            "right_hp": round(self.right.current_hp, 1)
+        })
 
     def _basic_attack(self, attacker: Champion, defender: Champion):
         """일반 공격으로 데미지를 입힘 (공식: ATK * ATK / DEF)"""
         atk = attacker.getStat('ATK')
         df = defender.getStat('DEF')
-        # 나누기 기반 공식으로 변경하여 방어력 효율 조정
         damage = (atk * atk) / max(1, df)
         defender.take_damage(damage)
 
@@ -93,10 +105,25 @@ class Battle:
             f"(HP: {defender.current_hp:.1f})"
         )
 
+        self.history.append({
+            "turn": self.turn,
+            "actor": attacker.name,
+            "target": defender.name,
+            "action": "일반 공격",
+            "damage": round(damage, 1),
+            "left_hp": round(self.left.current_hp, 1),
+            "right_hp": round(self.right.current_hp, 1)
+        })
+
     def _finish(self):
         """전투 종료 후 승자를 발표"""
         winner = self.left if self.left.is_alive() else self.right
         self._log(f"\n최종 승자: {winner.name} (턴 수: {self.turn})")
+        
+        # 승리 시 경험치 획득 (패배자의 레벨 * 50)
+        loser = self.right if winner == self.left else self.left
+        exp_gain = loser.level * 50
+        winner.gain_exp(exp_gain)
 
     def _log(self, msg: str):
         """전투 상황을 콘솔에 출력"""
