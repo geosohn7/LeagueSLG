@@ -1,0 +1,46 @@
+{
+    "GarenQ": {
+        "name": "Decisive Strike",
+        "probability": 0.3,
+        "power": 1.5,
+        "removes": [
+            "slow"
+        ],
+        "buffs": [
+            {
+                "type": "speed",
+                "target": "attacker",
+                "duration": 3,
+                "value": 0.2,
+                "scaling_stat": "ATK"
+            },
+            {
+                "type": "silence",
+                "target": "defender",
+                "duration": 2
+            }
+        ],
+        "description": "Garen removes all slows from himself and gains a burst of Movement Speed. His next attack deals bonus damage and silences his target."
+    },
+    "DariusQ": {
+        "name": "Decimation",
+        "probability": 0.5,
+        "power": 1.8,
+        "buffs": [
+            {
+                "type": "slow",
+                "target": "defender",
+                "duration": 2,
+                "value": 0.3,
+                "scaling_stat": "ATK"
+            }
+        ],
+        "description": "Darius hitches his axe and swings it in a circle. Enemies hit by the blade take more damage than those hit by the handle. Darius heals for a portion of his missing Health based on enemies hit by the blade."
+    },
+    "KhazixQ": {
+        "name": "Taste Their Fear",
+        "probability": 0.4,
+        "power": 2.2,
+        "description": "Deals physical damage to the target. Damage is increased against Isolated targets."
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "slow": {
+        "name": "Slow",
+        "base_value": 1.0,
+        "stat_type": "SPD",
+        "description": "Reduces target's Speed."
+    },
+    "speed": {
+        "name": "Speed Up",
+        "base_value": 1.0,
+        "stat_type": "SPD",
+        "description": "Increases caster's Speed."
+    },
+    "attack": {
+        "name": "Attack Boost",
+        "base_value": 0.5,
+        "stat_type": "ATK",
+        "description": "Increases Attack Power."
+    },
+    "defense": {
+        "name": "Defense Boost",
+        "base_value": 0.5,
+        "stat_type": "DEF",
+        "description": "Increases Defense Power."
+    },
+    "silence": {
+        "name": "Silence",
+        "base_value": 0,
+        "stat_type": "NONE",
+        "description": "Prevents using skills."
+    },
+    "stun": {
+        "name": "Stun",
+        "base_value": 0,
+        "stat_type": "NONE",
+        "description": "Prevents all actions."
+    }
+}
