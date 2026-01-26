@@ -24,7 +24,8 @@ class DatabaseManager:
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    username TEXT UNIQUE NOT NULL
+                    username TEXT UNIQUE NOT NULL,
+                    gold INTEGER DEFAULT 1000
                 )
             ''')
             
@@ -84,3 +85,12 @@ class DatabaseManager:
                 (level, exp, champion_id)
             )
             conn.commit()
+
+    def get_user_info(self, user_id: int) -> Dict[str, Any]:
+        """유저의 상세 정보(이름, 골드 등)를 가져옵니다."""
+        with self._get_connection() as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+            row = cursor.fetchone()
+            return dict(row) if row else None
