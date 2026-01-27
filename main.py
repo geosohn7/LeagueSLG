@@ -4,6 +4,8 @@ from src.factories.champion_factory import create_champion
 from src.common.report_generator import generate_report
 from src.models.user import User
 from src.common.database import DatabaseManager
+import webbrowser
+import os
 
 def printChamp(champ: Champion):
     print(f"\nWe have champion \"{champ.getName()}\":")
@@ -48,6 +50,11 @@ if __name__ == "__main__":
     # 웹 리포트 생성
     generate_report(battle1, "reports/battle_report.html")
     print("\n전투 시각화 리포트(reports/battle_report.html)가 생성되었습니다.")
+    
+    # 리포트 자동 열기
+    report_abs_path = os.path.abspath("reports/battle_report.html")
+    webbrowser.open(f"file:///{report_abs_path}")
+    print("브라우저에서 리포트를 열었습니다.")
 
     # 전투 결과 저장
     user.save_data()
