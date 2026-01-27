@@ -14,9 +14,11 @@ class Champion:
             level: int = 1,
             exp: int = 0,
             minions: tuple[str, int] = ('', 0),
-            skills: List[Skill] = [] 
+            skills: List[Skill] = [],
+            image: dict = {}
     ):
         self.name: str = name
+        self.images: dict = image or {}
         # 능력치 순서: [HP, ATK, DEF, SPATK, SPDEF, SPD]
         self.base_stat = base_stat or [0, 0, 0, 0, 0, 0]
         self.stat_growth = stat_growth or [0, 0, 0, 0, 0, 0]

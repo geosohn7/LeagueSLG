@@ -61,6 +61,19 @@ HTML_TEMPLATE = """
             text-align: center;
             position: relative;
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }}
+
+        .champion-image {{
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            object-fit: cover;
+            margin-bottom: 15px;
+            background-color: #000;
         }}
 
         .champion-card.active {{
@@ -159,6 +172,7 @@ HTML_TEMPLATE = """
 
     <div class="battle-arena">
         <div id="left-card" class="champion-card">
+            <img id="left-img" src="" class="champion-image" alt="Left Champion">
             <h2 id="left-name"></h2>
             <div class="hp-bar-container">
                 <div id="left-hp-bar" class="hp-bar"></div>
@@ -167,6 +181,7 @@ HTML_TEMPLATE = """
         </div>
 
         <div id="right-card" class="champion-card">
+            <img id="right-img" src="" class="champion-image" alt="Right Champion">
             <h2 id="right-name"></h2>
             <div class="hp-bar-container">
                 <div id="right-hp-bar" class="hp-bar"></div>
@@ -188,21 +203,54 @@ HTML_TEMPLATE = """
         const rightMaxHp = {right_max_hp};
         const leftName = "{left_name}";
         const rightName = "{right_name}";
+        const leftImages = {left_images};
+        const rightImages = {right_images};
 
         document.getElementById('left-name').innerText = leftName;
         document.getElementById('right-name').innerText = rightName;
+        // 초기 이미지 설정
+        document.getElementById('left-img').src = "../" + leftImages.default;
+        document.getElementById('right-img').src = "../" + rightImages.default;
+
         document.getElementById('battle-title').innerText = `${{leftName}} VS ${{rightName}}`;
         
         let currentIndex = 0;
         let isAutoPlaying = false;
+        let animationTimeout = null;
 
         function updateUI(step) {{
+            // 1. Reset Images & Active Status
             document.querySelectorAll('.champion-card').forEach(c => c.classList.remove('active'));
+            // 애니메이션 초기화 (기본 상태로 복귀)
+            if (animationTimeout) clearTimeout(animationTimeout);
+            document.getElementById('left-img').src = "../" + leftImages.default;
+            document.getElementById('right-img').src = "../" + rightImages.default;
             
-            const card = step.actor === leftName ? 'left-card' : 'right-card';
-            const targetCard = step.target === leftName ? 'left-card' : 'right-card';
+            const actorCardId = step.actor === leftName ? 'left-card' : 'right-card';
+            const targetCardId = step.target === leftName ? 'left-card' : 'right-card';
+            const actorImgId = step.actor === leftName ? 'left-img' : 'right-img';
+            const targetImgId = step.target === leftName ? 'left-img' : 'right-img';
+            const actorImages = step.actor === leftName ? leftImages : rightImages;
+            const targetImages = step.target === leftName ? leftImages : rightImages;
+
             
-            document.getElementById(card).classList.add('active');
+            // 2. Set Active Card
+            document.getElementById(actorCardId).classList.add('active');
+
+            // 3. Dynamic Image Transition (Attack & Hit)
+            // 공격자: 공격 모션
+            document.getElementById(actorImgId).src = "../" + actorImages.attack;
+            
+            // 피격자: 피격 모션 (데미지가 있을 경우)
+            if (step.damage > 0) {{
+                document.getElementById(targetImgId).src = "../" + targetImages.hit;
+            }}
+
+            // 4. Reset to Default after delay
+            animationTimeout = setTimeout(() => {{
+                document.getElementById(actorImgId).src = "../" + actorImages.default;
+                document.getElementById(targetImgId).src = "../" + targetImages.default;
+            }}, 800);
 
             // HP Bar Update
             const leftPercent = (step.left_hp / leftMaxHp) * 100;
@@ -216,7 +264,7 @@ HTML_TEMPLATE = """
 
             // Damage Pop
             if (step.damage > 0) {{
-                showDamage(targetCard, step.damage);
+                showDamage(targetCardId, step.damage);
             }}
 
             // Log Add
@@ -271,7 +319,9 @@ def generate_report(battle_instance, output_path="battle_report.html"):
         left_max_hp=battle_instance.left.max_hp,
         right_max_hp=battle_instance.right.max_hp,
         left_name=battle_instance.left.name,
-        right_name=battle_instance.right.name
+        right_name=battle_instance.right.name,
+        left_images=json.dumps(battle_instance.left.images),
+        right_images=json.dumps(battle_instance.right.images)
     )
     
     with open(output_path, "w", encoding="utf-8") as f:

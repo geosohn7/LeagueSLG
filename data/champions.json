@@ -1,6 +1,11 @@
 {
   "Garen": {
     "name": "Garen",
+    "images": {
+      "default": "static/images/garen.png",
+      "attack": "static/images/garen.png",
+      "hit": "static/images/garen.png"
+    },
     "base_stat": [
       690,
       69,
@@ -27,6 +32,11 @@
   },
   "Darius": {
     "name": "Darius",
+    "images": {
+      "default": "static/images/darius.png",
+      "attack": "static/images/darius.png",
+      "hit": "static/images/darius.png"
+    },
     "base_stat": [
       652,
       64,
