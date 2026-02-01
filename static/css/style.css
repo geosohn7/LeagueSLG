@@ -1,0 +1,188 @@
+:root {
+    --bg-color: #010a13;
+    --card-bg: #091428;
+    --border-color: #785a28;
+    --gold: #c8aa6e;
+    --health: #1e6432;
+    --damage: #c83232;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: #f0e6d2;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    margin-top: 30px;
+    text-align: center;
+}
+
+h1 {
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
+    letter-spacing: 2px;
+}
+
+.controls {
+    margin: 20px 0;
+    text-align: center;
+}
+
+button {
+    background: var(--gold);
+    border: none;
+    padding: 12px 30px;
+    color: #010a13;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: #e1c382;
+    transform: scale(1.05);
+}
+
+button:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.battle-arena {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 800px;
+    margin-top: 30px;
+    gap: 20px;
+}
+
+.champion-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    flex: 1;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.champion-card.active {
+    border-color: #f0e6d2;
+    box-shadow: 0 0 20px rgba(240, 230, 210, 0.5);
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+.champion-card.hit {
+    animation: shake 0.3s;
+    border-color: var(--damage);
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.vs-badge {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--border-color);
+}
+
+.hp-bar-container {
+    background: #222;
+    height: 20px;
+    width: 100%;
+    margin-top: 15px;
+    border: 1px solid #444;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.hp-bar {
+    height: 100%;
+    background: linear-gradient(to right, #28a745, #1e6432);
+    width: 100%;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hp-text {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #ccc;
+}
+
+.log-container {
+    margin-top: 40px;
+    width: 90%;
+    max-width: 800px;
+    background: rgba(9, 20, 40, 0.9);
+    border: 1px solid var(--border-color);
+    height: 250px;
+    overflow-y: auto;
+    padding: 15px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.log-entry {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(120, 90, 40, 0.2);
+    color: #aaa;
+}
+
+.log-entry.highlight {
+    color: #fff;
+    font-weight: bold;
+}
+
+.damage-pop {
+    position: absolute;
+    color: var(--damage);
+    font-weight: bold;
+    font-size: 28px;
+    animation: fadeUp 1s forwards;
+    pointer-events: none;
+    text-shadow: 1px 1px 0 #000;
+}
+
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 1; transform: translateY(-20px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-50px) scale(1); }
+}
+
+.winner-banner {
+    margin-top: 20px;
+    font-size: 2em;
+    color: var(--gold);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
