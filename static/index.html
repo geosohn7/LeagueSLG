@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeagueSLG Battle Arena</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>⚔️ LeagueSLG Arena ⚔️</h1>
+        <p>Real-time Battle Simulation</p>
+    </header>
+
+    <div class="controls">
+        <label>Player 1:
+            <select id="left-select"></select>
+        </label>
+        <span class="vs-text"> VS </span>
+        <label>Player 2:
+            <select id="right-select"></select>
+        </label>
+        <button id="start-btn" onclick="startBattle()">Start Battle</button>
+        <div id="status-msg">Select champions to begin...</div>
+    </div>
+
+    <div id="arena" class="battle-arena" style="display:none;">
+        <div id="left-card" class="champion-card">
+            <h2 id="left-name">Player 1</h2>
+            <div class="hp-bar-container">
+                <div id="left-hp-bar" class="hp-bar"></div>
+            </div>
+            <div id="left-hp-text" class="hp-text">100 / 100</div>
+        </div>
+
+        <div class="vs-badge">VS</div>
+
+        <div id="right-card" class="champion-card">
+            <h2 id="right-name">Player 2</h2>
+            <div class="hp-bar-container">
+                <div id="right-hp-bar" class="hp-bar"></div>
+            </div>
+            <div id="right-hp-text" class="hp-text">100 / 100</div>
+        </div>
+    </div>
+
+    <div id="winner-banner" class="winner-banner" style="display:none;">
+        WINNER: <span id="winner-name"></span>
+    </div>
+
+    <div id="logs" class="log-container"></div>
+
+    <script src="js/game.js"></script>
+</body>
+
+</html>

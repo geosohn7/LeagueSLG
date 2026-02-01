@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
@@ -6,13 +7,19 @@ import sys
 import os
 
 # Add the parent directory to sys.path to import existing classes
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from src.factories.champion_factory import create_champion, _load_champion_data
 from src.logic.battle.battle import Battle
 from src.models.champion import Champion
 
 app = FastAPI()
+
+# Mount Static Files
+if not os.path.exists("static"):
+    # Fallback or strict check, but for now assuming running from root
+    pass
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 # Allow CORS for frontend development
 app.add_middleware(
@@ -95,7 +102,12 @@ class WebBattle(Battle):
             self.turn += 1
         
         winner = self.left.name if self.left.is_alive() else self.right.name
-        return {"winner": winner, "logs": self.logs}
+        return {
+            "winner": winner, 
+            "logs": self.logs,
+            "left": {"name": self.left.name, "max_hp": self.left.max_hp},
+            "right": {"name": self.right.name, "max_hp": self.right.max_hp}
+        }
 
 @app.get("/champions")
 async def get_champions():

@@ -35,7 +35,8 @@ def create_champion(champion_id: str) -> Champion:
                 base_stat=c["base_stat"],
                 stat_growth=c["stat_growth"],
                 skills=skills,
-                minions=tuple(c["minions"]) if c.get("minions") else None
+                minions=tuple(c["minions"]) if c.get("minions") else None,
+                image=c.get("images", {})
             )
     except (ImportError, AttributeError):
         pass
@@ -45,5 +46,6 @@ def create_champion(champion_id: str) -> Champion:
         base_stat=c["base_stat"],
         stat_growth=c["stat_growth"],
         skills=skills,
-        minions=tuple(c["minions"]) if c.get("minions") else None
+        minions=tuple(c["minions"]) if c.get("minions") else None,
+        image=c.get("images", {})
     )

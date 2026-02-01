@@ -1,6 +1,11 @@
 {
   "Garen": {
     "name": "Garen",
+    "images": {
+      "default": "static/images/garen.png",
+      "attack": "static/images/garen.png",
+      "hit": "static/images/garen.png"
+    },
     "base_stat": [
       690,
       69,
@@ -27,10 +32,15 @@
   },
   "Darius": {
     "name": "Darius",
+    "images": {
+      "default": "static/images/darius.png",
+      "attack": "static/images/darius.png",
+      "hit": "static/images/darius.png"
+    },
     "base_stat": [
       652,
-      69,
-      38,
+      64,
+      39,
       0,
       32,
       340
@@ -71,6 +81,344 @@
     ],
     "skills": [
       "KhazixQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Lee Sin": {
+    "name": "Lee Sin",
+    "base_stat": [
+      645,
+      69,
+      36,
+      0,
+      32,
+      345
+    ],
+    "stat_growth": [
+      108,
+      3.7,
+      4.9,
+      0,
+      2.05,
+      0
+    ],
+    "skills": [
+      "LeeSinQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Jinx": {
+    "name": "Jinx",
+    "base_stat": [
+      630,
+      59,
+      26,
+      0,
+      30,
+      325
+    ],
+    "stat_growth": [
+      105,
+      2.9,
+      4.7,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "JinxQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Lux": {
+    "name": "Lux",
+    "base_stat": [
+      580,
+      54,
+      21,
+      0,
+      30,
+      330
+    ],
+    "stat_growth": [
+      99,
+      3.3,
+      5.2,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "LuxQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Ahri": {
+    "name": "Ahri",
+    "base_stat": [
+      590,
+      53,
+      21,
+      0,
+      30,
+      330
+    ],
+    "stat_growth": [
+      104,
+      3,
+      4.7,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "AhriQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Ezreal": {
+    "name": "Ezreal",
+    "base_stat": [
+      600,
+      60,
+      24,
+      0,
+      30,
+      325
+    ],
+    "stat_growth": [
+      102,
+      2.75,
+      4.7,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "EzrealQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Caitlyn": {
+    "name": "Caitlyn",
+    "base_stat": [
+      580,
+      60,
+      27,
+      0,
+      30,
+      325
+    ],
+    "stat_growth": [
+      107,
+      3.8,
+      4.7,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "CaitlynQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Katarina": {
+    "name": "Katarina",
+    "base_stat": [
+      672,
+      58,
+      28,
+      0,
+      32,
+      335
+    ],
+    "stat_growth": [
+      108,
+      3.2,
+      4.7,
+      0,
+      2.05,
+      0
+    ],
+    "skills": [
+      "KatarinaQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Ashe": {
+    "name": "Ashe",
+    "base_stat": [
+      610,
+      59,
+      26,
+      0,
+      30,
+      325
+    ],
+    "stat_growth": [
+      101,
+      2.95,
+      4.6,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "AsheQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Jhin": {
+    "name": "Jhin",
+    "base_stat": [
+      655,
+      59,
+      24,
+      0,
+      30,
+      330
+    ],
+    "stat_growth": [
+      107,
+      4.4,
+      4.7,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "JhinQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Kai'Sa": {
+    "name": "Kai'Sa",
+    "base_stat": [
+      640,
+      59,
+      25,
+      0,
+      30,
+      335
+    ],
+    "stat_growth": [
+      102,
+      2.6,
+      4.2,
+      0,
+      1.3,
+      0
+    ],
+    "skills": [
+      "KaiSaQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Akali": {
+    "name": "Akali",
+    "base_stat": [
+      600,
+      62,
+      23,
+      0,
+      37,
+      345
+    ],
+    "stat_growth": [
+      119,
+      3.3,
+      4.7,
+      0,
+      2.05,
+      0
+    ],
+    "skills": [
+      "AkaliQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Jax": {
+    "name": "Jax",
+    "base_stat": [
+      665,
+      68,
+      36,
+      0,
+      32,
+      350
+    ],
+    "stat_growth": [
+      100,
+      4.25,
+      4.2,
+      0,
+      2.05,
+      0
+    ],
+    "skills": [
+      "JaxQ"
+    ],
+    "minions": [
+      "minions",
+      0
+    ]
+  },
+  "Irelia": {
+    "name": "Irelia",
+    "base_stat": [
+      630,
+      65,
+      36,
+      0,
+      30,
+      335
+    ],
+    "stat_growth": [
+      115,
+      3.5,
+      4.7,
+      0,
+      2.05,
+      0
+    ],
+    "skills": [
+      "IreliaQ"
     ],
     "minions": [
       "minions",

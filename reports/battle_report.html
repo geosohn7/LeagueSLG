@@ -58,6 +58,19 @@
             text-align: center;
             position: relative;
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .champion-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            object-fit: cover;
+            margin-bottom: 15px;
+            background-color: #000;
         }
 
         .champion-card.active {
@@ -156,6 +169,7 @@
 
     <div class="battle-arena">
         <div id="left-card" class="champion-card">
+            <img id="left-img" src="" class="champion-image" alt="Left Champion">
             <h2 id="left-name"></h2>
             <div class="hp-bar-container">
                 <div id="left-hp-bar" class="hp-bar"></div>
@@ -164,6 +178,7 @@
         </div>
 
         <div id="right-card" class="champion-card">
+            <img id="right-img" src="" class="champion-image" alt="Right Champion">
             <h2 id="right-name"></h2>
             <div class="hp-bar-container">
                 <div id="right-hp-bar" class="hp-bar"></div>
@@ -180,26 +195,59 @@
     <div id="logs" class="log-container"></div>
 
     <script>
-        const history = [{"turn": 1, "actor": "Darius", "target": "Garen", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 89.8, "left_hp": 600.2, "right_hp": 652}, {"turn": 1, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 600.2, "right_hp": 487.8}, {"turn": 2, "actor": "Darius", "target": "Garen", "action": "Decimation", "damage": 161.7, "left_hp": 438.5, "right_hp": 487.8}, {"turn": 2, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 438.5, "right_hp": 323.5}, {"turn": 3, "actor": "Darius", "target": "Garen", "action": "Decimation", "damage": 161.7, "left_hp": 276.8, "right_hp": 323.5}, {"turn": 3, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 276.8, "right_hp": 159.3}, {"turn": 4, "actor": "Darius", "target": "Garen", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 89.8, "left_hp": 187.0, "right_hp": 159.3}, {"turn": 4, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 164.2, "left_hp": 187.0, "right_hp": 0}];
+        const history = [{"turn": 1, "actor": "Darius", "target": "Garen", "action": "Decimation", "damage": 129.3, "left_hp": 560.7, "right_hp": 652}, {"turn": 1, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 176.6, "left_hp": 560.7, "right_hp": 475.4}, {"turn": 2, "actor": "Darius", "target": "Garen", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 71.9, "left_hp": 488.8, "right_hp": 475.4}, {"turn": 2, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 176.6, "left_hp": 488.8, "right_hp": 298.7}, {"turn": 3, "actor": "Darius", "target": "Garen", "action": "Decimation", "damage": 129.3, "left_hp": 359.4, "right_hp": 298.7}, {"turn": 3, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 176.6, "left_hp": 359.4, "right_hp": 122.1}, {"turn": 4, "actor": "Darius", "target": "Garen", "action": "Decimation", "damage": 129.3, "left_hp": 230.1, "right_hp": 122.1}, {"turn": 4, "actor": "Garen", "target": "Darius", "action": "\uc77c\ubc18 \uacf5\uaca9", "damage": 176.6, "left_hp": 230.1, "right_hp": 0}];
         const leftMaxHp = 690;
         const rightMaxHp = 652;
         const leftName = "Garen";
         const rightName = "Darius";
+        const leftImages = {"default": "static/images/garen.png", "attack": "static/images/garen.png", "hit": "static/images/garen.png"};
+        const rightImages = {"default": "static/images/darius.png", "attack": "static/images/darius.png", "hit": "static/images/darius.png"};
 
         document.getElementById('left-name').innerText = leftName;
         document.getElementById('right-name').innerText = rightName;
+        // 초기 이미지 설정
+        document.getElementById('left-img').src = "../" + leftImages.default;
+        document.getElementById('right-img').src = "../" + rightImages.default;
+
         document.getElementById('battle-title').innerText = `${leftName} VS ${rightName}`;
         
         let currentIndex = 0;
         let isAutoPlaying = false;
+        let animationTimeout = null;
 
         function updateUI(step) {
+            // 1. Reset Images & Active Status
             document.querySelectorAll('.champion-card').forEach(c => c.classList.remove('active'));
+            // 애니메이션 초기화 (기본 상태로 복귀)
+            if (animationTimeout) clearTimeout(animationTimeout);
+            document.getElementById('left-img').src = "../" + leftImages.default;
+            document.getElementById('right-img').src = "../" + rightImages.default;
             
-            const card = step.actor === leftName ? 'left-card' : 'right-card';
-            const targetCard = step.target === leftName ? 'left-card' : 'right-card';
+            const actorCardId = step.actor === leftName ? 'left-card' : 'right-card';
+            const targetCardId = step.target === leftName ? 'left-card' : 'right-card';
+            const actorImgId = step.actor === leftName ? 'left-img' : 'right-img';
+            const targetImgId = step.target === leftName ? 'left-img' : 'right-img';
+            const actorImages = step.actor === leftName ? leftImages : rightImages;
+            const targetImages = step.target === leftName ? leftImages : rightImages;
+
             
-            document.getElementById(card).classList.add('active');
+            // 2. Set Active Card
+            document.getElementById(actorCardId).classList.add('active');
+
+            // 3. Dynamic Image Transition (Attack & Hit)
+            // 공격자: 공격 모션
+            document.getElementById(actorImgId).src = "../" + actorImages.attack;
+            
+            // 피격자: 피격 모션 (데미지가 있을 경우)
+            if (step.damage > 0) {
+                document.getElementById(targetImgId).src = "../" + targetImages.hit;
+            }
+
+            // 4. Reset to Default after delay
+            animationTimeout = setTimeout(() => {
+                document.getElementById(actorImgId).src = "../" + actorImages.default;
+                document.getElementById(targetImgId).src = "../" + targetImages.default;
+            }, 800);
 
             // HP Bar Update
             const leftPercent = (step.left_hp / leftMaxHp) * 100;
@@ -213,7 +261,7 @@
 
             // Damage Pop
             if (step.damage > 0) {
-                showDamage(targetCard, step.damage);
+                showDamage(targetCardId, step.damage);
             }
 
             // Log Add
