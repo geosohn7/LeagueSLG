@@ -15,10 +15,10 @@ class Battle:
 
     def start(self):
         """전투를 시작하고 승자가 결정될 때까지 루프를 실행"""
-        self._log(f"전투 시작: {self.left.name} vs {self.right.name}")
+        self._log(f"교전 시작: {self.left.name} vs {self.right.name}")
 
         while self._both_alive():
-            self._log(f"\n[ 제 {self.turn} 턴 ]")
+            self._log(f"\n[ 제 {self.turn} 합 ]")
 
             # 속도(SPD)에 기반하여 턴 순서를 결정
             first, second = self._get_turn_order()
@@ -57,7 +57,7 @@ class Battle:
 
     def _process_turn(self, actor: Champion, target: Champion):
         """개별 유닛의 턴 동작을 처리 (턴 시작 -> 스킬/평타 -> 턴 종료)"""
-        self._log(f"--- {actor.name}의 행동 ---")
+        self._log(f"--- {actor.name}의 공세 ---")
 
         # 턴 시작 (버프 갱신)
         actor.on_turn_start()
@@ -77,20 +77,20 @@ class Battle:
 
     def _use_skill(self, attacker: Champion, defender: Champion, skill: Skill):
         """스킬을 사용하고 결과를 로그에 남김"""
-        self._log(f"[{attacker.name}] {skill.name} 시전!")
+        self._log(f"[{attacker.name}] {skill.name} 발동!")
         old_hp = defender.current_hp
         skill.cast(self, attacker, defender)
         damage = old_hp - defender.current_hp
-        self._log(f"   (HP: {defender.current_hp:.1f})")
+        self._log(f"   (잔여 병력: {defender.current_hp:.0f})")
         
         self.history.append({
             "turn": self.turn,
             "actor": attacker.name,
             "target": defender.name,
             "action": skill.name,
-            "damage": round(damage, 1),
-            "left_hp": round(self.left.current_hp, 1),
-            "right_hp": round(self.right.current_hp, 1)
+            "damage": round(damage, 0),
+            "left_hp": round(self.left.current_hp, 0),
+            "right_hp": round(self.right.current_hp, 0)
         })
 
     def _basic_attack(self, attacker: Champion, defender: Champion):
@@ -101,8 +101,8 @@ class Battle:
         defender.take_damage(damage)
 
         self._log(
-            f"[{attacker.name}] 일반 공격 → {damage:.1f} 데미지 "
-            f"(HP: {defender.current_hp:.1f})"
+            f"[{attacker.name}] 공격 → {damage:.0f}명 손실 "
+            f"(잔여 병력: {defender.current_hp:.0f})"
         )
 
         self.history.append({
@@ -110,15 +110,15 @@ class Battle:
             "actor": attacker.name,
             "target": defender.name,
             "action": "일반 공격",
-            "damage": round(damage, 1),
-            "left_hp": round(self.left.current_hp, 1),
-            "right_hp": round(self.right.current_hp, 1)
+            "damage": round(damage, 0),
+            "left_hp": round(self.left.current_hp, 0),
+            "right_hp": round(self.right.current_hp, 0)
         })
 
     def _finish(self):
         """전투 종료 후 승자를 발표"""
         winner = self.left if self.left.is_alive() else self.right
-        self._log(f"\n최종 승자: {winner.name} (턴 수: {self.turn})")
+        self._log(f"\n최종 승자: {winner.name} (합 수: {self.turn})")
         
         # 승리 시 경험치 획득 (패배자의 레벨 * 50)
         loser = self.right if winner == self.left else self.left
