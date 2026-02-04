@@ -16,7 +16,7 @@ def main():
     # 2️⃣ 챔피언 지급
     champ = UserChampion(
         user_id=user.id,
-        champion_key="garen",
+        champion_key="Garen",
         level=1,
         exp=0
     )

@@ -1,19 +1,42 @@
 from src.models.champion import Champion
 from src.models.user_champion import UserChampion
+from data.champion_loader import load_champions
+from src.models.user_champion import UserChampion
 
-# 임시 기본 스탯 (나중에 데이터화)
-DEFAULT_BASE_STAT = [100, 10, 5, 0, 0, 3]
-DEFAULT_STAT_GROWTH = [10, 2, 1, 0, 0, 1]
+def orm_dict_to_champion(row: dict):
+    """
+    DatabaseManager(dict) → Champion
+    """
+    orm = UserChampion(
+        id=row["id"],
+        user_id=row["user_id"],
+        champion_key=row["champion_key"],
+        level=row["level"],
+        exp=row["exp"],
+    )
+    return orm_to_champion(orm)
 
 def orm_to_champion(orm: UserChampion) -> Champion:
+    champions = load_champions()
+
+    # DB에 저장된 champion_key 사용
+    data = champions.get(orm.champion_key)
+
+    if not data:
+        raise ValueError(f"Unknown champion key: {orm.champion_key}")
+
     champ = Champion(
-        name=orm.champion_key,
-        base_stat=DEFAULT_BASE_STAT,
-        stat_growth=DEFAULT_STAT_GROWTH,
+        name=data["name"],
+        base_stat=data["base_stat"],
+        stat_growth=data["stat_growth"],
         level=orm.level,
         exp=orm.exp,
+        minions=tuple(data.get("minions", ("", 0))),
+        image=data.get("images", {}),
     )
+
     return champ
+
 
 def champion_to_orm(champ: Champion, orm: UserChampion):
     orm.level = champ.level
