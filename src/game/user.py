@@ -1,5 +1,5 @@
 from typing import List
-from src.database_manager import DatabaseManager
+from src.db_manager import DatabaseManager
 from src.models.champion import Champion
 from src.logic.champion_mapper import orm_to_champion, champion_to_orm
 from src.logic.champion_mapper import orm_dict_to_champion

@@ -3,7 +3,7 @@ from src.logic.battle.battle import Battle
 from src.factories.champion_factory import create_champion
 from src.common.report_generator import generate_report
 from src.game.user import User  # import different user
-from src.database_manager import DatabaseManager
+from src.db_manager import DatabaseManager
 import webbrowser
 import os
 
@@ -70,3 +70,7 @@ if __name__ == "__main__":
     # 전투 결과 저장
     user.save_data()
     print("\n--- 데이터 저장 완료 ---")
+
+    # 전투 결과 로깅
+    db_manager.save_battle_log(user.user_id, battle1)
+    print("\n--- 전투 로그 저장 완료 ---")

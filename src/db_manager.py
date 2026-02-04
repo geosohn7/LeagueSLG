@@ -2,6 +2,8 @@ from typing import List, Dict, Any
 from src.common.database import SessionLocal
 from src.models.user import User
 from src.models.user_champion import UserChampion
+from src.models.battle_log import BattleLog
+import json
 
 
 class DatabaseManager:
@@ -121,6 +123,32 @@ class DatabaseManager:
 
             champ.level = level
             champ.exp = exp
+            db.commit()
+        finally:
+            db.close()
+
+    def save_battle_log(
+        self,
+        user_id: int,
+        battle,
+    ):
+        """
+        battle: Battle 인스턴스
+        """
+        db = SessionLocal()
+        try:
+            log = BattleLog(
+                user_id=user_id,
+                left_champion=battle.left.name,
+                right_champion=battle.right.name,
+                winner=battle.winner.name,
+                turn_count=battle.turn,
+                history_json=json.dumps(
+                    battle.history,
+                    ensure_ascii=False
+                ),
+            )
+            db.add(log)
             db.commit()
         finally:
             db.close()
