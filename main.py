@@ -2,10 +2,21 @@ from src.models.champion import Champion
 from src.logic.battle.battle import Battle
 from src.factories.champion_factory import create_champion
 from src.common.report_generator import generate_report
-from src.models.user import User
-from src.common.database import DatabaseManager
+from src.game.user import User  # import different user
+from src.db_manager import DatabaseManager
 import webbrowser
 import os
+
+#  --- DB CODE --- #
+from fastapi import FastAPI
+from db.database import Base, engine
+# from src. import user, battle_log
+
+app = FastAPI()
+
+# 테이블 생성 (초기 개발용)
+Base.metadata.create_all(bind=engine)
+#  --- DB CODE --- #
 
 def printChamp(champ: Champion):
     print(f"\nWe have champion \"{champ.getName()}\":")
@@ -59,3 +70,7 @@ if __name__ == "__main__":
     # 전투 결과 저장
     user.save_data()
     print("\n--- 데이터 저장 완료 ---")
+
+    # 전투 결과 로깅
+    db_manager.save_battle_log(user.user_id, battle1)
+    print("\n--- 전투 로그 저장 완료 ---")
