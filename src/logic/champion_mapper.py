@@ -15,3 +15,6 @@ def orm_to_champion(orm: UserChampion) -> Champion:
     )
     return champ
 
+def champion_to_orm(champ: Champion, orm: UserChampion):
+    orm.level = champ.level
+    orm.exp = champ.exp
