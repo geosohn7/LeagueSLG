@@ -11,7 +11,8 @@ class Battle:
         self.left = left
         self.right = right
         self.turn = 1
-        self.history = [] # 전투 기록 저장
+        self.history = []         # 전투 기록 저장
+        self.winner = None        # 승자 저장
 
     def start(self):
         """전투를 시작하고 승자가 결정될 때까지 루프를 실행"""
@@ -118,7 +119,10 @@ class Battle:
     def _finish(self):
         """전투 종료 후 승자를 발표"""
         winner = self.left if self.left.is_alive() else self.right
-        self._log(f"\n최종 승자: {winner.name} (합 수: {self.turn})")
+
+        self.winner = winner
+        self._log(f"\n최종 승자: {winner.name} (턴 수: {self.turn})")
+        main
         
         # 승리 시 경험치 획득 (패배자의 레벨 * 50)
         loser = self.right if winner == self.left else self.left
