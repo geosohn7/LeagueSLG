@@ -1,0 +1,165 @@
+{
+    "champions": {
+        "Garen": {
+            "id": "garen",
+            "name": "가렌",
+            "assets": {
+                "model_3d": "models/champions/garen.glb",
+                "texture": "textures/champions/garen_base.png",
+                "icon": "images/champions/garen_icon.png",
+                "portrait": "images/champions/garen_portrait.png",
+                "animations": {
+                    "idle": "animations/garen_idle.anim",
+                    "attack": "animations/garen_attack.anim",
+                    "skill_q": "animations/garen_q.anim",
+                    "skill_e": "animations/garen_e.anim",
+                    "victory": "animations/garen_victory.anim",
+                    "defeat": "animations/garen_defeat.anim"
+                }
+            },
+            "fallback": {
+                "color": "#4169E1",
+                "icon_text": "G"
+            }
+        },
+        "Darius": {
+            "id": "darius",
+            "name": "다리우스",
+            "assets": {
+                "model_3d": "models/champions/darius.glb",
+                "texture": "textures/champions/darius_base.png",
+                "icon": "images/champions/darius_icon.png",
+                "portrait": "images/champions/darius_portrait.png",
+                "animations": {
+                    "idle": "animations/darius_idle.anim",
+                    "attack": "animations/darius_attack.anim",
+                    "skill_q": "animations/darius_q.anim",
+                    "skill_r": "animations/darius_r.anim",
+                    "victory": "animations/darius_victory.anim",
+                    "defeat": "animations/darius_defeat.anim"
+                }
+            },
+            "fallback": {
+                "color": "#DC143C",
+                "icon_text": "D"
+            }
+        }
+    },
+    "buildings": {
+        "MAIN_CASTLE": {
+            "id": "main_castle",
+            "name": "주성",
+            "assets": {
+                "model_3d": "models/buildings/main_castle_lv{level}.glb",
+                "texture": "textures/buildings/castle_base.png",
+                "icon": "images/buildings/castle_icon.png"
+            },
+            "fallback": {
+                "color": "#8B4513"
+            }
+        },
+        "BARRACKS": {
+            "id": "barracks",
+            "name": "막사",
+            "assets": {
+                "model_3d": "models/buildings/barracks_lv{level}.glb",
+                "texture": "textures/buildings/barracks_base.png",
+                "icon": "images/buildings/barracks_icon.png"
+            },
+            "fallback": {
+                "color": "#696969"
+            }
+        }
+    },
+    "tiles": {
+        "FOOD": {
+            "id": "food_tile",
+            "name": "농지",
+            "assets": {
+                "model_3d": "models/tiles/farm_lv{level}.glb",
+                "texture": "textures/tiles/farm_ground.png",
+                "icon": "images/tiles/food_icon.png"
+            },
+            "fallback": {
+                "color": "#90EE90"
+            }
+        },
+        "WOOD": {
+            "id": "wood_tile",
+            "name": "숲",
+            "assets": {
+                "model_3d": "models/tiles/forest_lv{level}.glb",
+                "texture": "textures/tiles/forest_ground.png",
+                "icon": "images/tiles/wood_icon.png"
+            },
+            "fallback": {
+                "color": "#8B4513"
+            }
+        },
+        "IRON": {
+            "id": "iron_tile",
+            "name": "철광산",
+            "assets": {
+                "model_3d": "models/tiles/iron_mine_lv{level}.glb",
+                "texture": "textures/tiles/iron_ground.png",
+                "icon": "images/tiles/iron_icon.png"
+            },
+            "fallback": {
+                "color": "#808080"
+            }
+        },
+        "STONE": {
+            "id": "stone_tile",
+            "name": "채석장",
+            "assets": {
+                "model_3d": "models/tiles/quarry_lv{level}.glb",
+                "texture": "textures/tiles/stone_ground.png",
+                "icon": "images/tiles/stone_icon.png"
+            },
+            "fallback": {
+                "color": "#87CEEB"
+            }
+        },
+        "OBSTACLE": {
+            "id": "obstacle_tile",
+            "name": "장애물",
+            "assets": {
+                "model_3d": "models/tiles/mountain.glb",
+                "texture": "textures/tiles/mountain.png",
+                "icon": "images/tiles/obstacle_icon.png"
+            },
+            "fallback": {
+                "color": "#2F4F4F"
+            }
+        }
+    },
+    "effects": {
+        "damage_hit": {
+            "particle": "effects/particles/hit_impact.json",
+            "sound": "sounds/effects/hit.mp3"
+        },
+        "skill_cast": {
+            "particle": "effects/particles/skill_cast.json",
+            "sound": "sounds/effects/skill_whoosh.mp3"
+        },
+        "victory": {
+            "particle": "effects/particles/victory_sparkle.json",
+            "sound": "sounds/effects/victory_fanfare.mp3"
+        },
+        "defeat": {
+            "particle": "effects/particles/defeat_fade.json",
+            "sound": "sounds/effects/defeat_horn.mp3"
+        }
+    },
+    "ui": {
+        "backgrounds": {
+            "battle": "images/backgrounds/battle_arena.png",
+            "map": "images/backgrounds/world_map.png",
+            "menu": "images/backgrounds/main_menu.png"
+        },
+        "buttons": {
+            "primary": "images/ui/button_primary.png",
+            "secondary": "images/ui/button_secondary.png"
+        }
+    }
+}
