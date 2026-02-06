@@ -122,7 +122,6 @@ class Battle:
 
         self.winner = winner
         self._log(f"\n최종 승자: {winner.name} (턴 수: {self.turn})")
-        main
         
         # 승리 시 경험치 획득 (패배자의 레벨 * 50)
         loser = self.right if winner == self.left else self.left
