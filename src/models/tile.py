@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Optional, List
+from datetime import datetime
 from src.models.building import Building
 from src.models.army import Army
 
@@ -39,6 +40,9 @@ class Tile:
         # SLG 특성: 내구도
         self.max_durability = 100 * level
         self.current_durability = self.max_durability
+        
+        # 자원 생산: 마지막 수집 시간
+        self.last_collected: Optional[datetime] = None
 
     def can_pass(self, user_id: str) -> bool:
         """이동 가능 여부 체크"""
@@ -52,12 +56,47 @@ class Tile:
         
         return True
 
-    def get_production(self) -> dict:
-        """이 타일에서 생산되는 자원량 반환"""
+    def get_hourly_production(self) -> int:
+        """시간당 생산량 반환: (2*level - 1) * 100"""
         if self.category == TileCategory.RESOURCE and self.owner_id:
-            # 레벨에 비례하는 생산량 (예시 공식)
-            amount = self.level * 100
-            return {self.res_type.name: amount}
+            return (2 * self.level - 1) * 100
+        return 0
+
+    def get_production(self) -> dict:
+        """이 타일에서 생산되는 자원량 반환 (1시간 기준)"""
+        if self.category == TileCategory.RESOURCE and self.owner_id:
+            amount = self.get_hourly_production()
+            return {self.res_type.name.lower(): amount}
+        return {}
+    
+    def collect_resources(self) -> dict:
+        """
+        마지막 수집 이후 경과 시간에 따른 자원 수집.
+        반환값: {"resource_type": collected_amount}
+        """
+        if self.category != TileCategory.RESOURCE or not self.owner_id:
+            return {}
+        
+        now = datetime.now()
+        
+        # 첫 수집인 경우 (점령 직후)
+        if self.last_collected is None:
+            self.last_collected = now
+            return {}
+        
+        # 경과 시간 계산 (초 단위)
+        elapsed_seconds = (now - self.last_collected).total_seconds()
+        hours_elapsed = elapsed_seconds / 3600.0
+        
+        # 생산량 계산
+        hourly_rate = self.get_hourly_production()
+        collected_amount = int(hourly_rate * hours_elapsed)
+        
+        if collected_amount > 0:
+            self.last_collected = now
+            resource_key = self.res_type.name.lower()
+            return {resource_key: collected_amount}
+        
         return {}
 
     def occupy(self, user_id: str):
@@ -66,6 +105,8 @@ class Tile:
         self.current_durability = self.max_durability
         # 점령 시 중립 수비군 제거
         self.guard_army = None
+        # 자원 생산 시작 시점 기록
+        self.last_collected = datetime.now()
 
     def __repr__(self):
         category_name = self.res_type.value if self.category == TileCategory.RESOURCE else self.category.value

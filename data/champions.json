@@ -1,6 +1,7 @@
 {
   "Garen": {
     "name": "Garen",
+    "faction": "Demacia",
     "images": {
       "default": "static/images/garen.png",
       "attack": "static/images/garen.png",
@@ -32,6 +33,7 @@
   },
   "Darius": {
     "name": "Darius",
+    "faction": "Noxus",
     "images": {
       "default": "static/images/darius.png",
       "attack": "static/images/darius.png",
@@ -63,6 +65,7 @@
   },
   "Khazix": {
     "name": "Khazix",
+    "faction": "Void",
     "base_stat": [
       643,
       60,
@@ -89,6 +92,7 @@
   },
   "Lee Sin": {
     "name": "Lee Sin",
+    "faction": "Ionia",
     "base_stat": [
       645,
       69,
@@ -115,6 +119,7 @@
   },
   "Jinx": {
     "name": "Jinx",
+    "faction": "Zaun",
     "base_stat": [
       630,
       59,
@@ -141,6 +146,7 @@
   },
   "Lux": {
     "name": "Lux",
+    "faction": "Demacia",
     "base_stat": [
       580,
       54,
@@ -167,6 +173,7 @@
   },
   "Ahri": {
     "name": "Ahri",
+    "faction": "Ionia",
     "base_stat": [
       590,
       53,
@@ -193,6 +200,7 @@
   },
   "Ezreal": {
     "name": "Ezreal",
+    "faction": "Piltover",
     "base_stat": [
       600,
       60,
@@ -219,6 +227,7 @@
   },
   "Caitlyn": {
     "name": "Caitlyn",
+    "faction": "Piltover",
     "base_stat": [
       580,
       60,
@@ -245,6 +254,7 @@
   },
   "Katarina": {
     "name": "Katarina",
+    "faction": "Noxus",
     "base_stat": [
       672,
       58,
@@ -271,6 +281,7 @@
   },
   "Ashe": {
     "name": "Ashe",
+    "faction": "Freljord",
     "base_stat": [
       610,
       59,
@@ -297,6 +308,7 @@
   },
   "Jhin": {
     "name": "Jhin",
+    "faction": "Ionia",
     "base_stat": [
       655,
       59,
@@ -323,6 +335,7 @@
   },
   "Kai'Sa": {
     "name": "Kai'Sa",
+    "faction": "Void",
     "base_stat": [
       640,
       59,
@@ -349,6 +362,7 @@
   },
   "Akali": {
     "name": "Akali",
+    "faction": "Ionia",
     "base_stat": [
       600,
       62,
@@ -375,6 +389,7 @@
   },
   "Jax": {
     "name": "Jax",
+    "faction": "Icathia",
     "base_stat": [
       665,
       68,
@@ -401,6 +416,7 @@
   },
   "Irelia": {
     "name": "Irelia",
+    "faction": "Ionia",
     "base_stat": [
       630,
       65,

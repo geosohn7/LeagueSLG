@@ -51,11 +51,15 @@ class _BattleScreenState extends State<BattleScreen>
   void _initializeBattleData() {
     leftChampion = widget.battleData['left']['name'];
     rightChampion = widget.battleData['right']['name'];
-    leftMaxHp = widget.battleData['left']['max_hp'].toDouble();
-    rightMaxHp = widget.battleData['right']['max_hp'].toDouble();
+    // Handle both double and int for different API responses
+    leftMaxHp = (widget.battleData['left']['max_hp'] as num).toDouble();
+    rightMaxHp = (widget.battleData['right']['max_hp'] as num).toDouble();
+
+    // In case the update log gives current hp
     leftCurrentHp = leftMaxHp;
     rightCurrentHp = rightMaxHp;
-    battleLogs = widget.battleData['logs'];
+
+    battleLogs = widget.battleData['logs'] ?? [];
     winner = widget.battleData['winner'];
   }
 
