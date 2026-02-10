@@ -584,56 +584,158 @@ class AssignRequest(BaseModel):
 @app.post("/troops/assign")
 async def assign_troops_to_champion(request: AssignRequest):
     """예비 병력을 장수에게 배치 (HP 회복)"""
+    from src.logic.troop_service import TroopService
+    
+    troop_service = TroopService()
+    try:
+        # Champion Key가 아닌 DB ID가 필요하지만, Request에는 champion_key가 들어옴.
+        # 따라서 User ID와 Champion Key로 DB ID를 찾아야 함.
+        # TroopService가 이를 처리하거나 여기서 찾아서 넘겨야 함.
+        # TroopService.assign_troops는 champion_id (DB ID)를 요구함.
+        
+        # 여기서 찾아보자.
+        db_manager = game_state["db_manager"]
+        user_db_id = db_manager.get_or_create_user(request.user_id)
+        
+        # Find champion DB ID by key
+        champions = db_manager.get_user_champions(user_db_id)
+        target_champ = next((c for c in champions if c["champion_key"] == request.champion_key), None)
+        
+        if not target_champ:
+             raise HTTPException(status_code=404, detail="Champion not found.")
+             
+        success, msg, current_hp = troop_service.assign_troops(user_db_id, target_champ["id"], request.amount)
+        
+        if not success:
+            raise HTTPException(status_code=400, detail=msg)
+            
+        return {
+            "message": msg,
+            "champion": request.champion_key,
+            "current_hp": current_hp,
+            # Reserve troops logic in TroopService updates User model, but we need to return it?
+            # It's better to fetch fresh user info or just return.
+            "remaining_reserve": "Check /user/{id}" 
+        }
+    finally:
+        troop_service.close()
+
+@app.post("/troops/heal_all")
+async def heal_all_champions(request: DraftRequest):
+    """
+    모든 챔피언을 일괄 치료 (DraftRequest 재사용: user_id만 필요, amount 무시)
+    """
+    from src.logic.troop_service import TroopService
+    
+    troop_service = TroopService()
+    try:
+        db_manager = game_state["db_manager"]
+        user_db_id = db_manager.get_or_create_user(request.user_id)
+        
+        result = troop_service.heal_all_champions(user_db_id)
+        
+        if "error" in result:
+             raise HTTPException(status_code=400, detail=result["error"])
+             
+        return result
+    finally:
+        troop_service.close()
+
+# =========================
+# Army Management Endpoints
+# =========================
+class ArmyConfigRequest(BaseModel):
+    user_id: str
+    slot_index: int
+    champion_ids: List[int]
+    unit_type: str = "cavalry"
+
+@app.get("/army/{user_id}")
+async def get_user_armies(user_id: str):
+    """
+    유저의 모든 부대 구성 조회
+    Returns: 슬롯별 배치된 챔피언 목록
+    """
+    from src.logic.army_service import ArmyService
+    
     db_manager = game_state["db_manager"]
+    user_db_id = db_manager.get_or_create_user(user_id)
+    
+    service = ArmyService()
+    try:
+        armies = service.get_user_armies(user_db_id)
+        return {"user_id": user_id, "armies": armies}
+    finally:
+        service.close()
+
+@app.post("/army/configure")
+async def configure_army(request: ArmyConfigRequest):
+    """
+    부대 구성 저장/변경
+    - slot_index: 0~4 (최대 5개 부대)
+    - champion_ids: 배치할 챔피언 ID 목록 (최대 3명)
+    - unit_type: 병종 (cavalry, spearman, archer, shieldman)
+    """
+    from src.logic.army_service import ArmyService
+    
+    db_manager = game_state["db_manager"]
+    user_db_id = db_manager.get_or_create_user(request.user_id)
+    
+    service = ArmyService()
+    try:
+        result = service.save_army_configuration(
+            user_id=user_db_id,
+            slot_index=request.slot_index,
+            champion_ids=request.champion_ids,
+            unit_type=request.unit_type
+        )
+        return {"message": "부대 구성이 저장되었습니다.", **result}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    finally:
+        service.close()
+
+@app.post("/army/deploy")
+async def deploy_army_to_map(request: MarchRequest):
+    """
+    DB에 저장된 부대를 맵에 배치하고 행군 명령을 내림
+    - user_id: 유저 ID
+    - champion_key: 여기서는 slot_index로 사용 (정수형 문자열, 예: "0")
+    - target_x, target_y: 목표 좌표
+    """
     map_manager = game_state["map_manager"]
-    troop_manager = game_state["troop_manager"]
+    db_manager = game_state["db_manager"]
     
     user_db_id = db_manager.get_or_create_user(request.user_id)
     
-    # 1. 장수(Army) 찾기 (MapManager에서)
-    target_army = None
-    # armies dictionary was added to MapManager but might not be fully populated or keyed correctly
-    # Let's search in active_marches or scan tile? No, armies are better.
-    # We need a way to find specific user's specific champion army.
-    # For MVP, let's iterate tiles or keep an army list in MapManager.
-    # Assuming MapManager.armies is populated.
+    try:
+        slot_index = int(request.champion_key)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="champion_key에 슬롯 번호(0~4)를 입력하세요.")
     
-    # Find army by owner_id and champion name
-    for army in map_manager.armies.values():
-        if army.owner_id == request.user_id and army.champion.name == request.champion_key:
-            target_army = army
-            break
-            
-    if not target_army:
-         raise HTTPException(status_code=404, detail="Champion army not found.")
-         
-    # 2. 위치 확인 (본성/거점에 있어야 함 - 일단은 내 성 or 내 타일이면 허용)
-    tile = game_state["world_map"].get_tile(target_army.pos_x, target_army.pos_y)
-    if not tile or tile.owner_id != request.user_id:
-         raise HTTPException(status_code=400, detail="Champion must be in your territory.")
-         
-    # 3. 최대 HP 체크
-    max_hp = target_army.champion.max_hp
-    current_hp = target_army.champion.current_hp
-    needed = max_hp - current_hp
+    # DB에서 부대 구성 로드 → 게임 로직 Army 객체 생성
+    army = map_manager.deploy_army_from_db(user_db_id, slot_index)
     
-    if needed <= 0:
-        raise HTTPException(status_code=400, detail="Champion HP is already full.")
-        
-    assign_amount = min(request.amount, needed)
+    if not army:
+        raise HTTPException(status_code=404, detail="해당 슬롯에 부대가 없거나 챔피언이 배치되지 않았습니다.")
     
-    # 4. 병력 차감 (Manager)
-    db_manager.update_user_troops(user_db_id, -assign_amount)
+    # 본진 설정 (임시로 (0, 0))
+    army.set_position(0, 0)
+    army.home_pos = (0, 0)
     
-    # 5. HP 회복
-    target_army.champion.current_hp += assign_amount
-    target_army.troop_count = target_army.champion.current_hp # Sync troop count
+    # 행군 명령
+    target_pos = (request.target_x, request.target_y)
+    march = map_manager.send_march(army, target_pos)
+    
+    if not march:
+        raise HTTPException(status_code=400, detail="해당 위치로 행군할 수 없습니다.")
     
     return {
-        "message": f"Assigned {assign_amount} troops.",
-        "champion": target_army.champion.name,
-        "current_hp": target_army.champion.current_hp,
-        "remaining_reserve": db_manager.get_user_info(user_db_id).get("reserve_troops", 0)
+        "message": "부대 출격!",
+        "army_id": army.id,
+        "champions": [c.name for c in army.champions],
+        "target": target_pos,
+        "arrival_time": march.arrival_time.isoformat()
     }
 
 if __name__ == "__main__":

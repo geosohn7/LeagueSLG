@@ -224,6 +224,7 @@ class DatabaseManager:
                     "champion_key": c.champion_key,
                     "level": c.level,
                     "exp": c.exp,
+                    "army_db_id": c.army_db_id,
                 }
                 for c in champs
             ]

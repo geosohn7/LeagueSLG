@@ -4,6 +4,7 @@ from src.models.user import User
 from src.models.user_champion import UserChampion
 from src.models.battle_log import BattleLog
 from src.models.user_internal_building import UserInternalBuilding
+from src.models.army_model import ArmyDb
 
 def init():
     Base.metadata.create_all(bind=engine)

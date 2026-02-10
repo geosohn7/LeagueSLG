@@ -16,10 +16,12 @@ class Champion:
             minions: tuple[str, int] = ('', 0),
             skills: List[Skill] = [],
             image: dict = {},
-            faction: str = 'None'  # 진영 추가
+            faction: str = 'None',  # 진영 추가
+            db_id: int = None       # DB 연동용 ID (UserChampion.id)
     ):
         self.name: str = name
         self.faction: str = faction  # 진영 (녹서스, 데마시아, 공허 등)
+        self.db_id: int = db_id      # DB ID 저장
         self.images: dict = image or {}
         # 능력치 순서: [HP, ATK, DEF, SPATK, SPDEF, SPD]
         self.base_stat = base_stat or [0, 0, 0, 0, 0, 0]
