@@ -1,0 +1,254 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap');
+
+:root {
+    --bg-dark: #050a14;
+    --card-bg: #121212;
+    --text-primary: #f0e6d2;
+    --gold: #c8aa6e;
+    --silver: #bdc3c7;
+    --pickup: #e91e63;
+    --accent: #3498db;
+    --success: #2ecc71;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    text-align: center;
+    padding: 20px;
+}
+
+.main-nav {
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 30px;
+    border-radius: 50px;
+    display: inline-flex;
+    gap: 30px;
+    border: 1px solid var(--gold);
+    backdrop-filter: blur(10px);
+}
+
+.main-nav a {
+    color: #a09b8c;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 5px 20px;
+    border-radius: 20px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--gold);
+    background: rgba(200, 170, 110, 0.1);
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, var(--gold), var(--pickup));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Resources Panel */
+.resources-panel {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.resource {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.gold {
+    color: var(--gold);
+}
+
+.silver {
+    color: var(--silver);
+}
+
+/* Gacha Cards Container */
+.gacha-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Gacha Card Style */
+.gacha-card {
+    background: var(--card-bg);
+    width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.gacha-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+}
+
+.gacha-card.silver-card {
+    border-color: var(--silver);
+}
+
+.gacha-card.gold-card {
+    border-color: var(--gold);
+}
+
+.gacha-card.pickup-card {
+    border-color: var(--pickup);
+}
+
+.card-header {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+.card-cost {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+.card-body {
+    padding: 20px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+}
+
+.btn-pull {
+    margin-top: 20px;
+    padding: 10px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: var(--accent);
+    color: white;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.silver-card .btn-pull {
+    background: var(--silver);
+    color: black;
+}
+
+.gold-card .btn-pull {
+    background: var(--gold);
+    color: black;
+}
+
+.pickup-card .btn-pull {
+    background: var(--pickup);
+}
+
+/* Modal for Results */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    width: 400px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.result-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 5px solid var(--gold);
+    margin: 20px auto;
+    object-fit: cover;
+    background-color: #333;
+}
+
+.result-name {
+    font-size: 2rem;
+    color: var(--gold);
+    margin: 10px 0;
+}
+
+.close-btn {
+    background: transparent;
+    border: 1px solid var(--text-primary);
+    color: var(--text-primary);
+    padding: 5px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.close-btn:hover {
+    background: var(--text-primary);
+    color: var(--bg-dark);
+}

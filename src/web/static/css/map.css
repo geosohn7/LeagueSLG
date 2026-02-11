@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap');
+
+:root {
+    --bg-dark: #050a14;
+    --card-bg: #121212;
+    --text-primary: #f0e6d2;
+    --gold: #c8aa6e;
+    --tile-border: rgba(120, 90, 40, 0.2);
+    --food: #27ae60;
+    --wood: #a04000;
+    --iron: #7f8c8d;
+    --stone: #2471a3;
+    --obstacle: #1a1a1a;
+    --owned: rgba(30, 200, 100, 0.3);
+    --grid-gap: 2px;
+    --tile-size: 55px;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    margin-bottom: 25px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 30px;
+    border-radius: 50px;
+    display: flex;
+    gap: 30px;
+    border: 1px solid var(--gold);
+    backdrop-filter: blur(10px);
+}
+
+nav a {
+    color: #a09b8c;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 5px 20px;
+    border-radius: 20px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--gold);
+    background: rgba(200, 170, 110, 0.1);
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(200, 170, 110, 0.3);
+}
+
+/* Map Container */
+#map-container {
+    display: grid;
+    gap: var(--grid-gap);
+    background: #111;
+    border: 3px solid var(--gold);
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.tile {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    background: #222;
+    border: 1px solid var(--tile-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: transform 0.1s, border-color 0.2s;
+}
+
+.tile:hover {
+    transform: scale(1.1);
+    border-color: var(--gold);
+    z-index: 10;
+    background: #2a2a2a;
+}
+
+.tile.selected {
+    border: 2px solid var(--gold);
+    background: rgba(200, 170, 110, 0.15);
+    z-index: 9;
+}
+
+/* Category Styles */
+.tile.plain {
+    background: #222;
+}
+
+.tile.obstacle {
+    background: var(--obstacle);
+    filter: grayscale(1);
+}
+
+.tile.building {
+    background: rgba(200, 170, 110, 0.1);
+}
+
+/* Resource Bottom Borders */
+.res-FOOD {
+    border-bottom: 4px solid var(--food) !important;
+}
+
+.res-WOOD {
+    border-bottom: 4px solid var(--wood) !important;
+}
+
+.res-IRON {
+    border-bottom: 4px solid var(--iron) !important;
+}
+
+.res-STONE {
+    border-bottom: 4px solid var(--stone) !important;
+}
+
+.res-GOLD {
+    border-bottom: 4px solid #f1c40f !important;
+}
+
+.res-SILVER {
+    border-bottom: 4px solid #bdc3c7 !important;
+}
+
+/* Level Badge */
+.level-badge {
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 700;
+    opacity: 0.8;
+}
+
+/* Army Markers */
+.army-marker {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    z-index: 5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s;
+    background: #f1c40f;
+    color: #000;
+    font-weight: bold;
+}
+
+.army-marker.player {
+    background: var(--gold);
+    color: #000;
+}
+
+.army-marker.enemy {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* Info Panel */
+#info-panel {
+    margin-top: 30px;
+    padding: 20px 40px;
+    background: rgba(20, 25, 35, 0.9);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    width: 450px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+#tile-info {
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+}
+
+#tile-detail {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+#march-btn {
+    background: var(--gold);
+    color: #121212;
+    border: none;
+    padding: 10px 30px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#march-btn:hover {
+    background: #f0e6d2;
+    transform: translateY(-2px);
+}
+
+#march-btn:active {
+    transform: translateY(0);
+}

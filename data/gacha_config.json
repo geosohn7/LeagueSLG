@@ -1,0 +1,91 @@
+{
+    "silver_gacha": {
+        "name": "백동전 영웅 모집",
+        "currency": "silver",
+        "cost": 500,
+        "pool": [
+            {
+                "name": "온달",
+                "weight": 20
+            },
+            {
+                "name": "관창",
+                "weight": 20
+            },
+            {
+                "name": "신검",
+                "weight": 20
+            },
+            {
+                "name": "솔거",
+                "weight": 20
+            },
+            {
+                "name": "담징",
+                "weight": 20
+            }
+        ]
+    },
+    "gold_gacha": {
+        "name": "황금 인장 모집",
+        "currency": "gold",
+        "cost": 100,
+        "pool": [
+            {
+                "name": "광개토대왕",
+                "weight": 10
+            },
+            {
+                "name": "근초고왕",
+                "weight": 10
+            },
+            {
+                "name": "연개소문",
+                "weight": 10
+            },
+            {
+                "name": "계백",
+                "weight": 10
+            },
+            {
+                "name": "김유신",
+                "weight": 10
+            },
+            {
+                "name": "온조왕",
+                "weight": 15
+            },
+            {
+                "name": "박혁거세",
+                "weight": 15
+            },
+            {
+                "name": "장보고",
+                "weight": 15
+            },
+            {
+                "name": "이사부",
+                "weight": 5
+            }
+        ]
+    },
+    "pickup_gacha": {
+        "name": "신라 전설의 주역들",
+        "currency": "gold",
+        "cost": 200,
+        "pool": [
+            {
+                "name": "김유신",
+                "weight": 40
+            },
+            {
+                "name": "장보고",
+                "weight": 40
+            },
+            {
+                "name": "선덕여왕",
+                "weight": 20
+            }
+        ]
+    }
+}

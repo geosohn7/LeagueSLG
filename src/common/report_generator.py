@@ -44,49 +44,72 @@ HTML_TEMPLATE = """
 
         .battle-arena {{
             display: flex;
-            justify-content: space-around;
-            width: 90%;
-            max-width: 1000px;
+            justify-content: space-between;
+            width: 95%;
+            max-width: 1200px;
             margin-top: 50px;
+            gap: 40px;
+        }}
+
+        .team-container {{
+            display: flex;
+            flex-direction: column;
             gap: 20px;
+            width: 45%;
+        }}
+
+        .team-title {{
+            text-align: center;
+            font-size: 1.5em;
+            color: var(--gold);
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
         }}
 
         .champion-card {{
             background: var(--card-bg);
             border: 2px solid var(--border-color);
-            padding: 20px;
-            width: 40%;
+            padding: 10px;
             border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-            position: relative;
-            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             display: flex;
-            flex-direction: column;
             align-items: center;
-        }}
-
-        .champion-image {{
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid var(--gold);
-            object-fit: cover;
-            margin-bottom: 15px;
-            background-color: #000;
+            gap: 15px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }}
 
         .champion-card.active {{
             border-color: #f0e6d2;
-            box-shadow: 0 0 20px rgba(240, 230, 210, 0.3);
-            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(240, 230, 210, 0.5);
+            transform: scale(1.02);
+            z-index: 10;
+        }}
+
+        .champion-image {{
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            object-fit: cover;
+            background-color: #000;
+        }}
+
+        .champion-info {{
+            flex-grow: 1;
+        }}
+
+        .champion-name {{
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
         }}
 
         .hp-bar-container {{
             background: #222;
-            height: 25px;
+            height: 15px;
             width: 100%;
-            margin-top: 15px;
             border: 1px solid #444;
             overflow: hidden;
             border-radius: 2px;
@@ -100,8 +123,10 @@ HTML_TEMPLATE = """
         }}
 
         .hp-text {{
-            font-size: 14px;
-            margin-top: 5px;
+            font-size: 12px;
+            margin-top: 3px;
+            text-align: right;
+            color: #aaa;
         }}
 
         .log-container {{
@@ -110,7 +135,7 @@ HTML_TEMPLATE = """
             max-width: 800px;
             background: rgba(9, 20, 40, 0.8);
             border: 1px solid var(--border-color);
-            height: 300px;
+            height: 250px;
             overflow-y: auto;
             padding: 15px;
             border-radius: 4px;
@@ -120,6 +145,7 @@ HTML_TEMPLATE = """
             padding: 8px;
             border-bottom: 1px solid rgba(120, 90, 40, 0.2);
             animation: slideIn 0.3s ease-out;
+            font-size: 0.9em;
         }}
 
         @keyframes slideIn {{
@@ -128,7 +154,7 @@ HTML_TEMPLATE = """
         }}
 
         .controls {{
-            margin-top: 30px;
+            margin-top: 20px;
             display: flex;
             gap: 15px;
         }}
@@ -150,11 +176,19 @@ HTML_TEMPLATE = """
 
         .damage-pop {{
             position: absolute;
+            right: 20px;
+            top: 10px;
             color: var(--damage);
             font-weight: bold;
-            font-size: 24px;
-            animation: fadeUp 0.8s forwards;
+            font-size: 20px;
+            animation: fadeUp 1.0s forwards;
             pointer-events: none;
+            text-shadow: 1px 1px 2px black;
+        }}
+
+        .dead {{
+             filter: grayscale(100%) brightness(0.5);
+             border-color: #444;
         }}
 
         @keyframes fadeUp {{
@@ -171,22 +205,16 @@ HTML_TEMPLATE = """
     </header>
 
     <div class="battle-arena">
-        <div id="left-card" class="champion-card">
-            <img id="left-img" src="" class="champion-image" alt="Left Champion">
-            <h2 id="left-name"></h2>
-            <div class="hp-bar-container">
-                <div id="left-hp-bar" class="hp-bar"></div>
-            </div>
-            <div id="left-hp-text" class="hp-text"></div>
+        <!-- Left Team -->
+        <div class="team-container">
+            <div class="team-title" id="left-team-name">Team A</div>
+            <div id="left-team-cards"></div>
         </div>
 
-        <div id="right-card" class="champion-card">
-            <img id="right-img" src="" class="champion-image" alt="Right Champion">
-            <h2 id="right-name"></h2>
-            <div class="hp-bar-container">
-                <div id="right-hp-bar" class="hp-bar"></div>
-            </div>
-            <div id="right-hp-text" class="hp-text"></div>
+        <!-- Right Team -->
+        <div class="team-container">
+            <div class="team-title" id="right-team-name">Team B</div>
+            <div id="right-team-cards"></div>
         </div>
     </div>
 
@@ -199,75 +227,108 @@ HTML_TEMPLATE = """
 
     <script>
         const history = {history_json};
-        const leftMaxHp = {left_max_hp};
-        const rightMaxHp = {right_max_hp};
-        const leftName = "{left_name}";
-        const rightName = "{right_name}";
-        const leftImages = {left_images};
-        const rightImages = {right_images};
-
-        document.getElementById('left-name').innerText = leftName;
-        document.getElementById('right-name').innerText = rightName;
-        // 초기 이미지 설정
-        document.getElementById('left-img').src = "../" + leftImages.default;
-        document.getElementById('right-img').src = "../" + rightImages.default;
-
-        document.getElementById('battle-title').innerText = `${{leftName}} VS ${{rightName}}`;
         
+        // Arrays of champion data
+        const leftData = {left_data_json};  // [ {{name, max_hp, images}}, ... ]
+        const rightData = {right_data_json}; // [ {{name, max_hp, images}}, ... ]
+
+        const leftTeamName = "{left_name}";
+        const rightTeamName = "{right_name}";
+
+        document.getElementById('left-team-name').innerText = leftTeamName;
+        document.getElementById('right-team-name').innerText = rightTeamName;
+        document.getElementById('battle-title').innerText = `${{leftTeamName}} VS ${{rightTeamName}}`;
+
+        // Function to create cards
+        function renderCards(containerId, teamData, side) {{
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            teamData.forEach((champ, index) => {{
+                const card = document.createElement('div');
+                card.id = `${{side}}-card-${{index}}`;
+                card.className = 'champion-card';
+                card.innerHTML = `
+                    <div style="position: relative;">
+                        <img id="${{side}}-img-${{index}}" src="../${{champ.images.default}}" class="champion-image">
+                    </div>
+                    <div class="champion-info">
+                        <div class="champion-name">${{champ.name}}</div>
+                        <div class="hp-bar-container">
+                            <div id="${{side}}-hp-bar-${{index}}" class="hp-bar" style="width: 100%;"></div>
+                        </div>
+                        <div id="${{side}}-hp-text-${{index}}" class="hp-text">${{champ.max_hp}} / ${{champ.max_hp}}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            }});
+        }}
+
+        // Initialize UI
+        renderCards('left-team-cards', leftData, 'left');
+        renderCards('right-team-cards', rightData, 'right');
+
         let currentIndex = 0;
         let isAutoPlaying = false;
         let animationTimeout = null;
 
         function updateUI(step) {{
-            // 1. Reset Images & Active Status
+            // 1. Clean up previous active states
             document.querySelectorAll('.champion-card').forEach(c => c.classList.remove('active'));
-            // 애니메이션 초기화 (기본 상태로 복귀)
+            // Reset images to default (if animation was interrupted)
             if (animationTimeout) clearTimeout(animationTimeout);
-            document.getElementById('left-img').src = "../" + leftImages.default;
-            document.getElementById('right-img').src = "../" + rightImages.default;
             
-            const actorCardId = step.actor === leftName ? 'left-card' : 'right-card';
-            const targetCardId = step.target === leftName ? 'left-card' : 'right-card';
-            const actorImgId = step.actor === leftName ? 'left-img' : 'right-img';
-            const targetImgId = step.target === leftName ? 'left-img' : 'right-img';
-            const actorImages = step.actor === leftName ? leftImages : rightImages;
-            const targetImages = step.target === leftName ? leftImages : rightImages;
+            // Reset all images to default just in case
+            leftData.forEach((c, i) => document.getElementById(`left-img-${{i}}`).src = "../" + c.images.default);
+            rightData.forEach((c, i) => document.getElementById(`right-img-${{i}}`).src = "../" + c.images.default);
 
-            
-            // 2. Set Active Card
-            document.getElementById(actorCardId).classList.add('active');
+            // 2. Identify Actor & Target
+            const actorSide = step.actor_team;
+            const actorIndex = step.actor_index;
+            const targetSide = step.target_team;
+            const targetIndex = step.target_index;
 
-            // 3. Dynamic Image Transition (Attack & Hit)
-            // 공격자: 공격 모션
-            document.getElementById(actorImgId).src = "../" + actorImages.attack;
+            const actorCardId = `${{actorSide}}-card-${{actorIndex}}`;
+            const targetCardId = `${{targetSide}}-card-${{targetIndex}}`;
             
-            // 피격자: 피격 모션 (데미지가 있을 경우)
-            if (step.damage > 0) {{
-                document.getElementById(targetImgId).src = "../" + targetImages.hit;
+            const actorImgId = `${{actorSide}}-img-${{actorIndex}}`;
+            const targetImgId = `${{targetSide}}-img-${{targetIndex}}`;
+
+            const actorImages = (actorSide === 'left' ? leftData : rightData)[actorIndex].images;
+            const targetImages = (targetSide === 'left' ? leftData : rightData)[targetIndex].images;
+
+            // 3. Animation
+            const actorCard = document.getElementById(actorCardId);
+            if (actorCard) {{
+                actorCard.classList.add('active');
+                document.getElementById(actorImgId).src = "../" + actorImages.attack;
             }}
 
-            // 4. Reset to Default after delay
-            animationTimeout = setTimeout(() => {{
-                document.getElementById(actorImgId).src = "../" + actorImages.default;
-                document.getElementById(targetImgId).src = "../" + targetImages.default;
-            }}, 800);
-
-            // HP Bar Update
-            const leftPercent = (step.left_hp / leftMaxHp) * 100;
-            const rightPercent = (step.right_hp / rightMaxHp) * 100;
-
-            document.getElementById('left-hp-bar').style.width = Math.max(0, leftPercent) + '%';
-            document.getElementById('right-hp-bar').style.width = Math.max(0, rightPercent) + '%';
-            
-            document.getElementById('left-hp-text').innerText = `${{step.left_hp}} / ${{leftMaxHp}}`;
-            document.getElementById('right-hp-text').innerText = `${{step.right_hp}} / ${{rightMaxHp}}`;
-
-            // Damage Pop
-            if (step.damage > 0) {{
+            const targetCard = document.getElementById(targetCardId);
+            if (targetCard && step.damage > 0) {{
+                document.getElementById(targetImgId).src = "../" + targetImages.hit;
                 showDamage(targetCardId, step.damage);
             }}
 
-            // Log Add
+            // 4. Reset images after delay
+            animationTimeout = setTimeout(() => {{
+                if (actorCard) document.getElementById(actorImgId).src = "../" + actorImages.default;
+                if (targetCard) document.getElementById(targetImgId).src = "../" + targetImages.default;
+            }}, 800);
+
+            // 5. Update HP Bars
+            // Left Team
+            step.left_hp.forEach((hp, idx) => {{
+                const maxHp = leftData[idx].max_hp;
+                updateHpBar('left', idx, hp, maxHp);
+            }});
+
+            // Right Team
+            step.right_hp.forEach((hp, idx) => {{
+                const maxHp = rightData[idx].max_hp;
+                updateHpBar('right', idx, hp, maxHp);
+            }});
+
+            // 6. Log
             const logBox = document.getElementById('logs');
             const entry = document.createElement('div');
             entry.className = 'log-entry';
@@ -275,15 +336,32 @@ HTML_TEMPLATE = """
             logBox.prepend(entry);
         }}
 
+        function updateHpBar(side, index, currentHp, maxHp) {{
+            const bar = document.getElementById(`${{side}}-hp-bar-${{index}}`);
+            const text = document.getElementById(`${{side}}-hp-text-${{index}}`);
+            const card = document.getElementById(`${{side}}-card-${{index}}`);
+
+            if (!bar || !text) return;
+
+            const percent = (currentHp / maxHp) * 100;
+            bar.style.width = Math.max(0, percent) + '%';
+            text.innerText = `${{Math.max(0, currentHp)}} / ${{maxHp}}`;
+
+            if (currentHp <= 0) {{
+                card.classList.add('dead');
+            }} else {{
+                card.classList.remove('dead');
+            }}
+        }}
+
         function showDamage(cardId, amount) {{
             const card = document.getElementById(cardId);
+            if (!card) return;
             const pop = document.createElement('div');
             pop.className = 'damage-pop';
             pop.innerText = `-${{amount}}`;
-            pop.style.left = '50%';
-            pop.style.top = '20%';
             card.appendChild(pop);
-            setTimeout(() => pop.remove(), 800);
+            setTimeout(() => pop.remove(), 1000);
         }}
 
         function playNext() {{
@@ -306,7 +384,7 @@ HTML_TEMPLATE = """
                     return;
                 }}
                 playNext();
-            }}, 1200);
+            }}, 1000); // 1.0s interval
         }}
     </script>
 </body>
@@ -314,14 +392,29 @@ HTML_TEMPLATE = """
 """
 
 def generate_report(battle_instance, output_path="battle_report.html"):
+    # Prepare detailed team data
+    left_data = []
+    for champ in battle_instance.left_team:
+        left_data.append({
+            "name": champ.name,
+            "max_hp": champ.max_hp,
+            "images": champ.images
+        })
+
+    right_data = []
+    for champ in battle_instance.right_team:
+        right_data.append({
+            "name": champ.name,
+            "max_hp": champ.max_hp,
+            "images": champ.images
+        })
+    
     report_html = HTML_TEMPLATE.format(
         history_json=json.dumps(battle_instance.history),
-        left_max_hp=battle_instance.left.max_hp,
-        right_max_hp=battle_instance.right.max_hp,
-        left_name=battle_instance.left.name,
-        right_name=battle_instance.right.name,
-        left_images=json.dumps(battle_instance.left.images),
-        right_images=json.dumps(battle_instance.right.images)
+        left_data_json=json.dumps(left_data),
+        right_data_json=json.dumps(right_data),
+        left_name=f"Team {battle_instance.left_army.unit_type}",
+        right_name=f"Team {battle_instance.right_army.unit_type}"
     )
     
     with open(output_path, "w", encoding="utf-8") as f:

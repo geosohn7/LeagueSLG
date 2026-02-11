@@ -17,6 +17,11 @@ class MapManager:
         self.armies: Dict[str, Army] = {}
         self.battle_logs: Dict[str, List[dict]] = {}  # {user_id: [battle_result_dict]}
 
+    def get_user_armies(self, user_id: str) -> List[Army]:
+        """특정 유저의 소유 부대 목록 반환"""
+        return [army for army in self.armies.values() if str(army.owner_id) == str(user_id)]
+
+
 
     def create_army(self, user_id: str, champions: List[Champion]) -> Army:
         """최대 3명의 챔피언으로 부대 생성"""
@@ -87,12 +92,19 @@ class MapManager:
             # 수비군 생성: 타일 레벨에 따라 1~3명
             npc_count = min(3, max(1, tile.level // 2))  # Lv1-2: 1명, Lv3-4: 2명, Lv5+: 3명
             npc_team = []
+            
+            # 반군/악역 컨셉의 영웅 풀
+            rebel_pool = ["견훤", "궁예", "신검", "비담", "이차돈"]
+            
+            import random
             for i in range(npc_count):
-                npc_champ = create_champion("Darius")
+                # 랜덤하게 수비 대장 선정
+                npc_key = random.choice(rebel_pool)
+                npc_champ = create_champion(npc_key)
                 npc_champ.level = tile.level
                 npc_champ.recalculate_stats()
                 npc_champ.reset_status()
-                npc_champ.name = f"수비군{i+1} (Lv.{tile.level})"
+                npc_champ.name = f"수비대장 {npc_key} (Lv.{tile.level})"
                 npc_team.append(npc_champ)
             
             # NPC 병종 랜덤 선택

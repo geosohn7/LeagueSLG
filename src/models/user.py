@@ -8,7 +8,8 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     
     # 자원 시스템
-    gold = Column(Integer, default=1000, nullable=False)
+    gold = Column(Integer, default=100, nullable=False)   # Premium Currency (Cash Only)
+    silver = Column(Integer, default=1000, nullable=False) # Common Currency (Mined)
     food = Column(Integer, default=500, nullable=False)
     wood = Column(Integer, default=500, nullable=False)
     iron = Column(Integer, default=100, nullable=False)
@@ -16,5 +17,5 @@ class User(Base):
     
     reserve_troops = Column(Integer, default=100, nullable=False)
     
-    # 골드 자동 생산용
-    last_gold_collected = Column(DateTime, nullable=True)
+    # 은(Silver) 자동 생산용 (기존 Gold 대체)
+    last_silver_collected = Column(DateTime, nullable=True)

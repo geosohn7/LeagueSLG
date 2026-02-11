@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeagueSLG: Gacha</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gacha.css') }}">
+    <style>
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <a href="/" class="active">🎲 영웅 모집</a>
+            <a href="/map">🗺️ 월드 맵</a>
+        </nav>
+
+        <h1>삼국 영웅 모집</h1>
+
+        <!-- Resources -->
+        <div class="resources-panel">
+            <div class="resource gold" id="gold-display">
+                🏆 황금: <span id="gold-count">...</span>
+            </div>
+            <div class="resource silver" id="silver-display">
+                🥈 은전: <span id="silver-count">...</span>
+            </div>
+            <button onclick="mineSilver()"
+                style="margin-left: 20px; padding: 5px 10px; cursor: pointer; border-radius: 5px; background: #333; color: white; border: 1px solid var(--gold);">⛏️
+                은전 채굴 (데모)</button>
+        </div>
+
+        <!-- Gacha Cards -->
+        <div class="gacha-container">
+            <!-- Silver Gacha -->
+            <div class="gacha-card silver-card" onclick="pullGacha('silver_gacha')">
+                <div class="card-header">
+                    <div class="card-title">백동전 모집</div>
+                    <div class="card-cost">500 은전</div>
+                </div>
+                <div class="card-body">
+                    <p>일반 영웅 및 인물</p>
+                    <button class="btn-pull">모집하기</button>
+                </div>
+            </div>
+
+            <!-- Gold Gacha -->
+            <div class="gacha-card gold-card" onclick="pullGacha('gold_gacha')">
+                <div class="card-header">
+                    <div class="card-title">황금 인장 모집</div>
+                    <div class="card-cost">100 황금</div>
+                </div>
+                <div class="card-body">
+                    <p>희귀 / 전설급 영웅</p>
+                    <button class="btn-pull">모집하기</button>
+                </div>
+            </div>
+
+            <!-- Pickup Gacha -->
+            <div class="gacha-card pickup-card" onclick="pullGacha('pickup_gacha')">
+                <div class="card-header">
+                    <div class="card-title">신라의 명장 픽업</div>
+                    <div class="card-cost">200 황금</div>
+                </div>
+                <div class="card-body">
+                    <p>주역: <strong>김유신 & 장보고</strong></p>
+                    <button class="btn-pull">모집하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="result-modal" style="display: none;">
+        <div class="modal-content">
+            <h2 id="result-title">축하합니다!</h2>
+            <div id="result-content">
+                <!-- Dynamic Content -->
+            </div>
+            <button class="close-btn" onclick="closeModal()">닫기</button>
+        </div>
+    </div>
+
+    <script>
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateResources();
+        });
+
+        async function updateResources() {
+            try {
+                const response = await fetch('/api/user/info');
+                const data = await response.json();
+                if (data.resources) {
+                    document.getElementById('gold-count').innerText = data.resources.gold;
+                    document.getElementById('silver-count').innerText = data.resources.silver;
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function pullGacha(type) {
+            const modal = document.getElementById('result-modal');
+            const content = document.getElementById('result-content');
+            const title = document.getElementById('result-title');
+
+            // Show Loading
+            modal.style.display = 'flex';
+            title.innerText = "영웅을 부르는 중...";
+            content.innerHTML = '<div class="loader"></div>';
+
+            try {
+                const response = await fetch('/api/gacha/pull', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ gacha_type: type })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    title.innerText = "🎉 새로운 영웅의 합류!";
+                    const heroName = data.result.name;
+                    content.innerHTML = `
+                    <div style="font-size: 5rem; margin: 20px;">🛡️</div>
+                    <div class="result-name">${heroName}</div>
+                    <p>당신의 부대에 합류했습니다!</p>
+                `;
+                    // Update resources instantly
+                    updateResources();
+                } else {
+                    title.innerText = "❌ 모집 실패";
+                    content.innerHTML = `<p style="color: red;">${data.message}</p>`;
+                }
+
+            } catch (e) {
+                title.innerText = "Error";
+                content.innerHTML = `<p>${e.message}</p>`;
+            }
+        }
+
+        async function mineSilver() {
+            try {
+                const response = await fetch('/api/mine/collect', { method: 'POST' });
+                const data = await response.json();
+                alert(data.message);
+                updateResources();
+            } catch (e) {
+                alert("Mining failed");
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').style.display = 'none';
+        }
+
+        // Quick close on outside click
+        window.onclick = function (event) {
+            const modal = document.getElementById('result-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+</body>
+
+</html>

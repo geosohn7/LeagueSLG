@@ -110,7 +110,8 @@ class DatabaseManager:
                 "id": user.id,
                 "username": user.username,
                 "resources": {
-                    "gold": user.gold,
+                    "gold": user.gold,     # Premium
+                    "silver": user.silver, # Common
                     "food": user.food,
                     "wood": user.wood,
                     "iron": user.iron,
@@ -121,8 +122,8 @@ class DatabaseManager:
         finally:
             db.close()
 
-    def update_user_gold_generation(self, user_id: int, hourly_rate: int):
-        """시간 경과에 따른 골드 지급"""
+    def update_user_silver_generation(self, user_id: int, hourly_rate: int):
+        """시간 경과에 따른 은(Silver) 지급 (기존 Gold 대체)"""
         db = SessionLocal()
         try:
             user = db.query(User).filter(User.id == user_id).first()
@@ -131,27 +132,26 @@ class DatabaseManager:
             now = datetime.now()
             
             # 첫 수집(혹은 초기화)인 경우
-            if not user.last_gold_collected:
-                user.last_gold_collected = now
+            if not user.last_silver_collected:
+                user.last_silver_collected = now
                 db.commit()
                 return
 
             # 경과 시간 계산
-            elapsed = (now - user.last_gold_collected).total_seconds()
+            elapsed = (now - user.last_silver_collected).total_seconds()
             hours = elapsed / 3600.0
             
             # 최소 1분(60초) 이상 지났을 때만 처리 (DB 부하 방지)
             if elapsed < 60:
                 return
 
-            # 골드 계산
-            earned_gold = int(hours * hourly_rate)
+            # 은 계산
+            earned_silver = int(hours * hourly_rate)
             
-            if earned_gold > 0:
-                user.gold += earned_gold
-                user.last_gold_collected = now
+            if earned_silver > 0:
+                user.silver += earned_silver
+                user.last_silver_collected = now
                 db.commit()
-                # print(f"User {user_id}: Earned {earned_gold} gold (Rate: {hourly_rate}/h)")
         finally:
             db.close()
 
@@ -163,7 +163,7 @@ class DatabaseManager:
             if not user:
                 return False
             
-            valid_resources = ["gold", "food", "wood", "iron", "stone"]
+            valid_resources = ["gold", "silver", "food", "wood", "iron", "stone"]
             if resource_type not in valid_resources:
                 return False
             

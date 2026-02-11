@@ -131,13 +131,20 @@ class Battle:
         
         target = random.choice(alive_enemies)
 
-        # 스킬 확률 체크 및 시전
+        # 스킬 확률 체크 및 시전 (스킬 사용 후 평타도 사용)
         skill = actor.roll_skills()
         if skill:
             self._use_skill(actor, target, skill)
-        else:
-            # 스킬 미발동 시 일반 공격
-            self._basic_attack(actor, target)
+        
+        # 스킬 사용 후 타겟이 죽었는지 확인
+        if not target.is_alive():
+            alive_enemies = self._get_alive_enemies(enemy_team)
+            if not alive_enemies:
+                return # 적 전멸
+            target = random.choice(alive_enemies)
+
+        # 일반 공격 (항상 실행)
+        self._basic_attack(actor, target)
 
         # 턴 종료 (지속시간 감소)
         actor.on_turn_end()
@@ -150,14 +157,33 @@ class Battle:
         damage = old_hp - defender.current_hp
         self._log(f"   (잔여 병력: {defender.current_hp:.0f})")
         
+        # Determine teams and indices
+        if attacker in self.left_team:
+            actor_team = "left"
+            actor_index = self.left_team.index(attacker)
+        else:
+            actor_team = "right"
+            actor_index = self.right_team.index(attacker)
+
+        if defender in self.left_team:
+            target_team = "left"
+            target_index = self.left_team.index(defender)
+        else:
+            target_team = "right"
+            target_index = self.right_team.index(defender)
+
         self.history.append({
             "turn": self.turn,
             "actor": attacker.name,
             "target": defender.name,
+            "actor_team": actor_team,
+            "actor_index": actor_index,
+            "target_team": target_team,
+            "target_index": target_index,
             "action": skill.name,
             "damage": round(damage, 0),
-            "left_hp": sum(c.current_hp for c in self.left_team if c.is_alive()),
-            "right_hp": sum(c.current_hp for c in self.right_team if c.is_alive())
+            "left_hp": [c.current_hp for c in self.left_team],
+            "right_hp": [c.current_hp for c in self.right_team]
         })
 
     def _basic_attack(self, attacker: Champion, defender: Champion):
@@ -172,14 +198,33 @@ class Battle:
             f"잔여 병력: {defender.current_hp:.0f})"
         )
 
+        # Determine teams and indices
+        if attacker in self.left_team:
+            actor_team = "left"
+            actor_index = self.left_team.index(attacker)
+        else:
+            actor_team = "right"
+            actor_index = self.right_team.index(attacker)
+
+        if defender in self.left_team:
+            target_team = "left"
+            target_index = self.left_team.index(defender)
+        else:
+            target_team = "right"
+            target_index = self.right_team.index(defender)
+
         self.history.append({
             "turn": self.turn,
             "actor": attacker.name,
             "target": defender.name,
+            "actor_team": actor_team,
+            "actor_index": actor_index,
+            "target_team": target_team,
+            "target_index": target_index,
             "action": "일반 공격",
             "damage": round(damage, 0),
-            "left_hp": sum(c.current_hp for c in self.left_team if c.is_alive()),
-            "right_hp": sum(c.current_hp for c in self.right_team if c.is_alive())
+            "left_hp": [c.current_hp for c in self.left_team],
+            "right_hp": [c.current_hp for c in self.right_team]
         })
 
     def _finish(self):
