@@ -1,46 +1,519 @@
 {
-    "GarenQ": {
-        "name": "Decisive Strike",
+    "가야금": {
+        "name": "가야금",
         "probability": 0.3,
-        "power": 1.5,
-        "removes": [
-            "slow"
-        ],
+        "power": 1.6,
+        "description": "가야금을 통해 상황을 유리하게 이끕니다.",
+        "buffs": [
+            {
+                "type": "intelligence",
+                "target": "ally",
+                "duration": 3,
+                "value": 0.15,
+                "scaling_stat": "INT"
+            }
+        ]
+    },
+    "거문고연주": {
+        "name": "거문고연주",
+        "probability": 0.3,
+        "power": 1.6,
+        "description": "거문고연주을 통해 상황을 유리하게 이끕니다.",
         "buffs": [
             {
                 "type": "speed",
-                "target": "attacker",
+                "target": "ally",
                 "duration": 3,
-                "value": 0.2,
-                "scaling_stat": "ATK"
-            },
-            {
-                "type": "silence",
-                "target": "defender",
-                "duration": 2
+                "value": 0.15,
+                "scaling_stat": "INT"
             }
-        ],
-        "description": "Garen removes all slows from himself and gains a burst of Movement Speed. His next attack deals bonus damage and silences his target."
+        ]
     },
-    "DariusQ": {
-        "name": "Decimation",
-        "probability": 0.5,
-        "power": 1.8,
+    "건국지계": {
+        "name": "건국지계",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "건국지계 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "관심법": {
+        "name": "관심법",
+        "probability": 0.3,
+        "power": 1.6,
+        "description": "관심법을 통해 상황을 유리하게 이끕니다.",
         "buffs": [
             {
-                "type": "slow",
-                "target": "defender",
-                "duration": 2,
-                "value": 0.3,
-                "scaling_stat": "ATK"
+                "type": "intelligence",
+                "target": "ally",
+                "duration": 3,
+                "value": 0.15,
+                "scaling_stat": "INT"
             }
-        ],
-        "description": "Darius hitches his axe and swings it in a circle. Enemies hit by the blade take more damage than those hit by the handle. Darius heals for a portion of his missing Health based on enemies hit by the blade."
+        ]
     },
-    "KhazixQ": {
-        "name": "Taste Their Fear",
+    "국사편찬": {
+        "name": "국사편찬",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "국사편찬 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "귀신부리기": {
+        "name": "귀신부리기",
+        "probability": 0.2,
+        "power": 2.5,
+        "description": "전설적인 귀신부리기의 힘을 개방하여 전장을 지배합니다."
+    },
+    "금궤강림": {
+        "name": "금궤강림",
+        "probability": 0.2,
+        "power": 2.5,
+        "description": "전설적인 금궤강림의 힘을 개방하여 전장을 지배합니다."
+    },
+    "금당벽화": {
+        "name": "금당벽화",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "금당벽화 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "나당동맹": {
+        "name": "나당동맹",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "나당동맹 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "나무우산사자": {
+        "name": "나무우산사자",
+        "probability": 0.4,
+        "power": 2.4000000000000004,
+        "description": "강력한 나무우산사자 공격으로 적을 제압합니다."
+    },
+    "낙성": {
+        "name": "낙성",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "낙성의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "heal",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "남진정책": {
+        "name": "남진정책",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "남진정책 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "내조의여왕": {
+        "name": "내조의여왕",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "내조의여왕의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "heal",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "노송도": {
+        "name": "노송도",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "노송도 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "달의빛": {
+        "name": "달의빛",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "달의빛 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "대장장이": {
+        "name": "대장장이",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "대장장이 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "동해룡": {
+        "name": "동해룡",
+        "probability": 0.2,
+        "power": 2.5,
+        "description": "전설적인 동해룡의 힘을 개방하여 전장을 지배합니다."
+    },
+    "두나라의어머니": {
+        "name": "두나라의어머니",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "두나라의어머니 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "망국의한": {
+        "name": "망국의한",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "망국의한 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "매화랑": {
+        "name": "매화랑",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "매화랑 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "바둑계략": {
+        "name": "바둑계략",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "바둑계략 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "방아타령": {
+        "name": "방아타령",
+        "probability": 0.3,
+        "power": 1.6,
+        "description": "방아타령을 통해 상황을 유리하게 이끕니다.",
+        "buffs": [
+            {
+                "type": "intelligence",
+                "target": "ally",
+                "duration": 3,
+                "value": 0.15,
+                "scaling_stat": "INT"
+            }
+        ]
+    },
+    "방어계책": {
+        "name": "방어계책",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "방어계책의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "shield",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "백색우유": {
+        "name": "백색우유",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "백색우유 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "부흥운동": {
+        "name": "부흥운동",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "부흥운동 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "사랑의희생": {
+        "name": "사랑의희생",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "사랑의희생의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "heal",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "사비천도": {
+        "name": "사비천도",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "사비천도 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "살수대첩": {
+        "name": "살수대첩",
         "probability": 0.4,
         "power": 2.2,
-        "description": "Deals physical damage to the target. Damage is increased against Isolated targets."
+        "description": "강력한 살수대첩 공격으로 적을 제압합니다."
+    },
+    "서동요": {
+        "name": "서동요",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "서동요 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "성불": {
+        "name": "성불",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "성불의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "heal",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "소금상인": {
+        "name": "소금상인",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "소금상인 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "안시성방어": {
+        "name": "안시성방어",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "안시성방어의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "shield",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "알의강림": {
+        "name": "알의강림",
+        "probability": 0.2,
+        "power": 2.5,
+        "description": "전설적인 알의강림의 힘을 개방하여 전장을 지배합니다."
+    },
+    "영토확장": {
+        "name": "영토확장",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "영토확장 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "오도검": {
+        "name": "오도검",
+        "probability": 0.4,
+        "power": 2.1,
+        "description": "강력한 오도검 공격으로 적을 제압합니다."
+    },
+    "왕오천축국전": {
+        "name": "왕오천축국전",
+        "probability": 0.4,
+        "power": 2.4000000000000004,
+        "description": "강력한 왕오천축국전 공격으로 적을 제압합니다."
+    },
+    "육박전": {
+        "name": "육박전",
+        "probability": 0.4,
+        "power": 2.1,
+        "description": "강력한 육박전 공격으로 적을 제압합니다."
+    },
+    "율령포고": {
+        "name": "율령포고",
+        "probability": 0.3,
+        "power": 1.6,
+        "description": "율령포고을 통해 상황을 유리하게 이끕니다.",
+        "buffs": [
+            {
+                "type": "intelligence",
+                "target": "ally",
+                "duration": 3,
+                "value": 0.15,
+                "scaling_stat": "INT"
+            }
+        ]
+    },
+    "이두정리": {
+        "name": "이두정리",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "이두정리 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "일본전교": {
+        "name": "일본전교",
+        "probability": 0.4,
+        "power": 2.2,
+        "description": "강력한 일본전교 공격으로 적을 제압합니다."
+    },
+    "일본전수": {
+        "name": "일본전수",
+        "probability": 0.4,
+        "power": 2.2,
+        "description": "강력한 일본전수 공격으로 적을 제압합니다."
+    },
+    "일통삼한": {
+        "name": "일통삼한",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "일통삼한 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "임존성수복": {
+        "name": "임존성수복",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "임존성수복의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "heal",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "자명고파괴": {
+        "name": "자명고파괴",
+        "probability": 0.4,
+        "power": 2.3,
+        "description": "강력한 자명고파괴 공격으로 적을 제압합니다."
+    },
+    "정변": {
+        "name": "정변",
+        "probability": 0.4,
+        "power": 2.0,
+        "description": "강력한 정변 공격으로 적을 제압합니다."
+    },
+    "좌원대첩": {
+        "name": "좌원대첩",
+        "probability": 0.4,
+        "power": 2.2,
+        "description": "강력한 좌원대첩 공격으로 적을 제압합니다."
+    },
+    "지기삼사": {
+        "name": "지기삼사",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "지기삼사 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "지렁이강림": {
+        "name": "지렁이강림",
+        "probability": 0.2,
+        "power": 2.5,
+        "description": "전설적인 지렁이강림의 힘을 개방하여 전장을 지배합니다."
+    },
+    "진대법": {
+        "name": "진대법",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "진대법의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "heal",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "찬기파랑가": {
+        "name": "찬기파랑가",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "찬기파랑가 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "처용무": {
+        "name": "처용무",
+        "probability": 0.4,
+        "power": 2.1,
+        "description": "강력한 처용무 공격으로 적을 제압합니다."
+    },
+    "천자문전파": {
+        "name": "천자문전파",
+        "probability": 0.4,
+        "power": 2.3,
+        "description": "강력한 천자문전파 공격으로 적을 제압합니다."
+    },
+    "청해진": {
+        "name": "청해진",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "청해진 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "충심간언": {
+        "name": "충심간언",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "충심간언 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "태양의빛": {
+        "name": "태양의빛",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "태양의빛 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "토황소격문": {
+        "name": "토황소격문",
+        "probability": 0.4,
+        "power": 2.3,
+        "description": "강력한 토황소격문 공격으로 적을 제압합니다."
+    },
+    "평강의지혜": {
+        "name": "평강의지혜",
+        "probability": 0.35,
+        "power": 1.2,
+        "description": "평강의지혜의 힘으로 아군을 보호하거나 회복합니다.",
+        "buffs": [
+            {
+                "type": "heal",
+                "target": "ally",
+                "duration": 2,
+                "value": 0.2,
+                "scaling_stat": "DEF"
+            }
+        ]
+    },
+    "해골물": {
+        "name": "해골물",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "해골물 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "해동증자": {
+        "name": "해동증자",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "해동증자 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "해상강국": {
+        "name": "해상강국",
+        "probability": 0.4,
+        "power": 2.2,
+        "description": "강력한 해상강국 공격으로 적을 제압합니다."
+    },
+    "해안정착": {
+        "name": "해안정착",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "해안정착 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "화랑정신": {
+        "name": "화랑정신",
+        "probability": 0.2,
+        "power": 2.5,
+        "description": "전설적인 화랑정신의 힘을 개방하여 전장을 지배합니다."
+    },
+    "화엄종": {
+        "name": "화엄종",
+        "probability": 0.3,
+        "power": 1.5,
+        "description": "화엄종 스킬을 사용하여 적에게 피해를 주거나 아군을 지원합니다."
+    },
+    "활쏘기": {
+        "name": "활쏘기",
+        "probability": 0.4,
+        "power": 2.1,
+        "description": "강력한 활쏘기 공격으로 적을 제압합니다.",
+        "range": "long"
+    },
+    "황산벌결사": {
+        "name": "황산벌결사",
+        "probability": 0.4,
+        "power": 2.3,
+        "description": "강력한 황산벌결사 공격으로 적을 제압합니다."
     }
 }

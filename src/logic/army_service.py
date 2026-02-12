@@ -17,7 +17,7 @@ class ArmyService:
                     "slot_index": 0,
                     "unit_type": "cavalry",
                     "champions": [
-                        {"id": 1, "key": "Garen", "level": 5},
+                        {"id": 1, "key": "주몽", "level": 5},
                         ...
                     ]
                 },

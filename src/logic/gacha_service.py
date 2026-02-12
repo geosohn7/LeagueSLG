@@ -87,7 +87,7 @@ class GachaService:
         config = self.gacha_config[gacha_type]
         cost = config['cost']
         currency = config['currency']
-        pool = config['pool'] # List of {"name": "Garen", "weight": 10}
+        pool = config['pool'] # List of {"name": "주몽", "weight": 10}
 
         # 2. Check User Resource
         user_info = self.db.get_user_info(user_id)

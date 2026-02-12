@@ -8,8 +8,8 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     
     # 자원 시스템
-    gold = Column(Integer, default=100, nullable=False)   # Premium Currency (Cash Only)
-    silver = Column(Integer, default=1000, nullable=False) # Common Currency (Mined)
+    gold = Column(Integer, default=10000, nullable=False)   # Premium Currency (Cash Only)
+    silver = Column(Integer, default=100000, nullable=False) # Common Currency (Mined)
     food = Column(Integer, default=500, nullable=False)
     wood = Column(Integer, default=500, nullable=False)
     iron = Column(Integer, default=100, nullable=False)

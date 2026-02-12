@@ -25,29 +25,13 @@ def _load_champion_data():
 def create_champion(champion_id: str) -> Champion:
     data = _load_champion_data()
 
-    # [Patch] Handle Legacy Keys directly in Factory
-    legacy_map = {
-        "Garen": "주몽", "Ashe": "소서노", "Lux": "선덕여왕",
-        "Darius": "광개토대왕", "Ahri": "평강공주", "Katarina": "연개소문",
-        "Jhin": "양만춘", "Lee Sin": "계백", "Yasuo": "김유신",
-        "Teemo": "이차돈", "Ezreal": "김춘추", "Caitlyn": "낙랑공주",
-        "Jinx": "호동왕자", "Leona": "세오녀", "LeBlanc": "도림",
-        "Guan Yu": "관창", "Zhu Ge Liang": "을지문덕", "Cao Cao": "연개소문",
-        "Sejong the Great": "광개토대왕", "Khazix": "비형랑",
-        "Kai'Sa": "설총", "Akali": "최치원", "Jax": "온달", "Irelia": "평강공주"
-    }
-
     if champion_id not in data:
-        if champion_id in legacy_map:
-            # print(f"[Factory] Redirecting '{champion_id}' -> '{legacy_map[champion_id]}'")
-            champion_id = legacy_map[champion_id]
-        else:
-            # Fallback if specific mapping missing but needed to proceed
-            # print(f"[Factory] Unknown ID '{champion_id}', falling back to '주몽'")
-            champion_id = "주몽"
+         # Fallback if specific ID missing but needed to proceed
+         # print(f"[Factory] Unknown ID '{champion_id}', falling back to '주몽'")
+         champion_id = "주몽"
             
     if champion_id not in data:
-         raise ValueError(f"Champion '{champion_id}' not found after mapping")
+         raise ValueError(f"Champion '{champion_id}' not found")
 
     c = data[champion_id]
     skills = [create_skill(sid) for sid in c.get("skills", [])]

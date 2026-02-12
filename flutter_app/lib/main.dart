@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'battle_screen.dart';
 import 'start_screen.dart';
 import 'city_management_screen.dart';
+import 'screens/champion_roster_screen.dart';
+import 'screens/gacha_screen.dart';
 
 void main() {
   runApp(const LeagueSLGApp());
@@ -36,7 +38,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   // API 설정
-  static const String apiBaseUrl = 'http://localhost:8000';
+  static const String apiBaseUrl = 'http://127.0.0.1:8000';
 
   // 맵 데이터
   int mapWidth = 0;
@@ -264,6 +266,19 @@ class _MapScreenState extends State<MapScreen> {
         title: Text('LeagueSLG - ${widget.userId}'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.people),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ChampionRosterScreen(userId: widget.userId),
+                ),
+              );
+            },
+            tooltip: 'Champions',
+          ),
+          IconButton(
             icon: const Icon(Icons.apartment),
             onPressed: () {
               Navigator.push(
@@ -280,6 +295,18 @@ class _MapScreenState extends State<MapScreen> {
             icon: const Icon(Icons.refresh),
             onPressed: loadMapData,
             tooltip: 'Reload Map',
+          ),
+          IconButton(
+            icon: const Icon(Icons.card_giftcard),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GachaScreen(userId: widget.userId),
+                ),
+              );
+            },
+            tooltip: '장수 소환',
           ),
         ],
       ),

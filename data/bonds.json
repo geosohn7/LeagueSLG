@@ -1,0 +1,241 @@
+{
+    "buyeo_legacy": {
+        "name": "부여의 혈통",
+        "description": "북부여에서 시작된 제왕의 피가 흐릅니다.",
+        "required": [
+            "주몽",
+            "온조왕"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "goguryeo_conquerors": {
+        "name": "정복 군주",
+        "description": "광개토대왕과 장수왕이 함께 전장에 나섭니다. 강력한 공격력과 체력을 얻습니다.",
+        "required": [
+            "광개토대왕",
+            "장수왕"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.15,
+                "target": "all"
+            },
+            {
+                "stat": "HP",
+                "value": 0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "salsu_ansi": {
+        "name": "살수와 안시성",
+        "description": "수나라와 당나라의 대군을 막아낸 고구려의 영웅들입니다.",
+        "required": [
+            "을지문덕",
+            "양만춘"
+        ],
+        "buffs": [
+            {
+                "stat": "DEF",
+                "value": 0.15,
+                "target": "all"
+            },
+            {
+                "stat": "INT",
+                "value": 0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "goguryeo_power": {
+        "name": "막리지와 성주",
+        "description": "연개소문과 양만춘, 고구려 후기를 이끈 강력한 무장들입니다.",
+        "required": [
+            "연개소문",
+            "양만춘"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.1,
+                "target": "all"
+            },
+            {
+                "stat": "DEF",
+                "value": 0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "ondal_pyeonggang": {
+        "name": "바보와 공주",
+        "description": "평강공주의 내조로 온달장군이 각성합니다.",
+        "required": [
+            "온달",
+            "평강공주"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.3,
+                "target": "온달"
+            },
+            {
+                "stat": "DEF",
+                "value": 0.2,
+                "target": "평강공주"
+            },
+            {
+                "stat": "HP",
+                "value": 0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "jamyeong_go": {
+        "name": "자명고의 비극",
+        "description": "호동왕자와 낙랑공주의 슬픈 사랑.",
+        "required": [
+            "호동왕자",
+            "낙랑공주"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.2,
+                "target": "all"
+            },
+            {
+                "stat": "DEF",
+                "value": -0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "baekje_last": {
+        "name": "황산벌의 결의",
+        "description": "의자왕과 계백. 백제의 마지막을 지킨 충절.",
+        "required": [
+            "의자왕",
+            "계백"
+        ],
+        "buffs": [
+            {
+                "stat": "DEF",
+                "value": 0.2,
+                "target": "all"
+            }
+        ]
+    },
+    "baekje_loyalists": {
+        "name": "백제의 충신",
+        "description": "성충과 흥수. 백제를 위해 쓴소리를 아끼지 않은 충신들입니다.",
+        "required": [
+            "성충",
+            "흥수"
+        ],
+        "buffs": [
+            {
+                "stat": "INT",
+                "value": 0.2,
+                "target": "all"
+            }
+        ]
+    },
+    "later_baekje": {
+        "name": "후백제의 야망",
+        "description": "견훤과 신검, 힘으로 일어선 후백제의 맹주들입니다.",
+        "required": [
+            "견훤",
+            "신검"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.2,
+                "target": "all"
+            },
+            {
+                "stat": "DEF",
+                "value": -0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "goguryeo_trinity": {
+        "name": "고구려의 삼대장",
+        "description": "을지문덕, 연개소문, 양만춘. 고구려를 지탱한 위대한 장수들입니다. (3인 인연)",
+        "required": [
+            "을지문덕",
+            "연개소문",
+            "양만춘"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.1,
+                "target": "all"
+            },
+            {
+                "stat": "DEF",
+                "value": 0.15,
+                "target": "all"
+            },
+            {
+                "stat": "HP",
+                "value": 0.1,
+                "target": "all"
+            }
+        ]
+    },
+    "baekje_last_stand": {
+        "name": "백제의 마지막 영웅들",
+        "description": "계백, 성충, 흥수. 백제의 마지막 불꽃입니다. (3인 인연)",
+        "required": [
+            "계백",
+            "성충",
+            "흥수"
+        ],
+        "buffs": [
+            {
+                "stat": "DEF",
+                "value": 0.25,
+                "target": "all"
+            },
+            {
+                "stat": "SPDEF",
+                "value": 0.2,
+                "target": "all"
+            }
+        ]
+    },
+    "hwangsanbeol_heroes": {
+        "name": "황산벌의 영웅들",
+        "description": "계백, 관창, 김유신, 반굴. 황산벌 전투의 주역들 중 3명 이상이 모이면 발동합니다.",
+        "required": [
+            "계백",
+            "관창",
+            "김유신",
+            "반굴"
+        ],
+        "buffs": [
+            {
+                "stat": "ATK",
+                "value": 0.2,
+                "target": "all"
+            },
+            {
+                "stat": "DEF",
+                "value": 0.1,
+                "target": "all"
+            }
+        ]
+    }
+}

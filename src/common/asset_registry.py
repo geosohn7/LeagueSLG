@@ -33,7 +33,7 @@ class AssetRegistry:
         챔피언의 에셋 정보 조회
         
         Args:
-            champion_key: 챔피언 키 (예: "Garen")
+            champion_key: 챔피언 키 (예: "주몽")
             
         Returns:
             에셋 정보 딕셔너리 또는 None

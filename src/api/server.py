@@ -16,6 +16,7 @@ from src.models.champion import Champion
 from src.models.world_map import WorldMap
 from src.logic.map_manager import MapManager
 from src.logic.building_manager import BuildingManager
+from src.models.army_model import ArmyDb  # Added to resolve relationship
 from src.logic.troop_manager import TroopManager
 from src.models.tile import TileCategory, ResourceType
 from src.models.building import BuildingType
@@ -342,6 +343,142 @@ async def place_building(request: BuildingPlaceRequest):
         "building_id": building.id,
         "type": building.type.name,
         "position": root_pos
+    }
+
+# =========================
+# Champion Roster Endpoints (NEW)
+# =========================
+@app.get("/user/{user_id}/champions")
+async def get_user_champion_roster(user_id: str):
+    """
+    보유 장수 목록 조회 (카드 리스트용)
+    Returns: 간략한 정보 (이름, 레벨, 이미지, 등급)
+    """
+    db_manager = game_state["db_manager"]
+    user_db_id = db_manager.get_or_create_user(user_id)
+    
+    champions = db_manager.get_user_champions(user_db_id)
+    champion_data = _load_champion_data()
+    
+    roster = []
+    for champ in champions:
+        key = champ["champion_key"]
+        data = champion_data.get(key, {})
+        
+        roster.append({
+            "id": champ["id"],
+            "key": key,
+            "name": data.get("name", key),
+            "level": champ["level"],
+            "exp": champ["exp"],
+            "faction": data.get("faction", "Unknown"),
+            "images": data.get("images", {}),
+            # 등급은 base_stat 합계로 간단히 계산 (임시)
+            "rating": sum(data.get("base_stat", [0]*6))
+        })
+    
+    return {"user_id": user_id, "champions": roster}
+
+@app.get("/user/{user_id}/champion/{champion_id}")
+async def get_champion_detail(user_id: str, champion_id: int):
+    """
+    장수 상세 정보 조회
+    Returns: 능력치, 아이템, 관련 인연, 설명
+    """
+    from src.logic.bond_manager import BondManager
+    from src.logic.champion_mapper import orm_dict_to_champion
+    
+    db_manager = game_state["db_manager"]
+    user_db_id = db_manager.get_or_create_user(user_id)
+    
+    # 챔피언 DB 조회
+    champions = db_manager.get_user_champions(user_db_id)
+    champ_data = next((c for c in champions if c["id"] == champion_id), None)
+    
+    if not champ_data:
+        raise HTTPException(status_code=404, detail="Champion not found")
+    
+    # Champion 객체로 변환
+    champion = orm_dict_to_champion(champ_data)
+    champion_static_data = _load_champion_data().get(champ_data["champion_key"], {})
+    
+    # 인연 정보 조회
+    bond_manager = BondManager()
+    related_bonds = bond_manager.get_related_bonds(champion.name)
+    
+    return {
+        "id": champion_id,
+        "name": champion.name,
+        "level": champion.level,
+        "exp": champion.exp,
+        "faction": champion.faction,
+        "stats": champion.stat,
+        "base_stat": champion.base_stat,
+        "stat_growth": champion.stat_growth,
+        "max_hp": champion.max_hp,
+        "current_hp": champion.current_hp,
+        "description": champion_static_data.get("description", "설명이 없습니다."),
+        "images": champion_static_data.get("images", {}),
+        "items": [{"name": getattr(item, "name", "Unknown")} for item in champion.items],
+        "bonds": related_bonds,
+        "skills": [{"name": skill.name} for skill in champion.skills]
+    }
+
+# =========================
+# Gacha Endpoints
+# =========================
+@app.get("/gacha/config")
+async def get_gacha_config():
+    """가챠 설정 정보 조회"""
+    from src.logic.gacha_service import GachaService
+    db_manager = game_state["db_manager"]
+    service = GachaService(db_manager)
+    
+    # 설정 파일 로드 (서비스 내부 메서드 활용 불가하므로 직접 로드하거나 서비스에 getter 추가 필요)
+    # 여기서는 서비스 인스턴스의 변수 직접 접근 (Python)
+    return service.gacha_config
+
+class GachaPullRequest(BaseModel):
+    user_id: str
+    gacha_type: str
+
+@app.post("/gacha/pull")
+async def pull_gacha(request: GachaPullRequest):
+    """가챠 실행"""
+    from src.logic.gacha_service import GachaService
+    db_manager = game_state["db_manager"]
+    # 유저 DB ID 조회
+    user_db_id = db_manager.get_or_create_user(request.user_id)
+    
+    service = GachaService(db_manager)
+    success, msg, result = service.pull_champion(user_db_id, request.gacha_type)
+    
+    # [테스트용] 잔액 부족 시 자동 충전 후 재시도
+    if not success and "Not enough" in msg:
+        print(f"⚠️ [TEST MODE] Insufficient funds for {request.user_id}. Adding resources...")
+        db_manager.update_user_resource(user_db_id, "gold", 5000)
+        db_manager.update_user_resource(user_db_id, "silver", 10000)
+        # 재시도
+        success, msg, result = service.pull_champion(user_db_id, request.gacha_type)
+
+    if not success:
+        raise HTTPException(status_code=400, detail=msg)
+    
+    # 챔피언 상세 정보 추가 (편의성)
+    data = _load_champion_data()
+    champ_info = data.get(result["name"], {})
+    
+    return {
+        "success": True,
+        "message": msg,
+        "result": {
+            "name": result["name"],
+            "image": champ_info.get("images", {}).get("portrait", ""),
+            "faction": champ_info.get("faction", "Unknown"),
+            "rating": sum(champ_info.get("base_stat", [0]*6)),
+            "remaining_currency": result["remaining_currency"],
+            "currency_type": result["currency_type"]
+        }
     }
 
 # =========================
