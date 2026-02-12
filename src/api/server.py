@@ -64,7 +64,22 @@ def initialize_game():
         print("✅ Game world initialized (20x20)")
 
 # Initialize on startup
-initialize_game()
+# initialize_game()  <-- Moving this to startup event or keeping it, but we need DB tables first
+
+@app.on_event("startup")
+async def startup_event():
+    print("🚀 Server starting up...")
+    
+    # 1. Ensure DB Tables exist
+    from src.common.database import Base, engine
+    # Import models to register them with Base
+    from src.models import user, user_champion, battle_log, user_internal_building, army_model
+    
+    Base.metadata.create_all(bind=engine)
+    print("✅ Database tables checked/created")
+    
+    # 2. Initialize Game State
+    initialize_game()
 
 # =========================
 # Pydantic Models
@@ -216,7 +231,7 @@ async def send_march(request: MarchRequest):
     champion.recalculate_stats()
     champion.reset_status()
     
-    army = map_manager.create_army(request.user_id, champion)
+    army = map_manager.create_army(request.user_id, [champion])
     
     # 유저의 본진 찾기 (임시로 (0, 0) 사용, 실제로는 DB에서 조회)
     army.set_position(0, 0)

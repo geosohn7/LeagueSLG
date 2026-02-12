@@ -42,6 +42,9 @@ pip install -r requirements.txt
 # 또는 (Windows)
 py -m pip install -r requirements.txt
 
+# 데이터베이스 초기화 (최초 1회)
+py src/init_db.py
+
 # 서버 실행
 py src/api/server.py
 ```
